@@ -1,0 +1,128 @@
+TYPE 0x1
+KERB_VALIDATION_INFO 
+LogonTime:                      
+    dwLowDateTime:                   3737976553 
+    dwHighDateTime:                  30687950 
+LogoffTime:                     
+    dwLowDateTime:                   4294967295 
+    dwHighDateTime:                  2147483647 
+KickOffTime:                    
+    dwLowDateTime:                   4294967295 
+    dwHighDateTime:                  2147483647 
+PasswordLastSet:                
+    dwLowDateTime:                   2515940959 
+    dwHighDateTime:                  30687917 
+PasswordCanChange:              
+    dwLowDateTime:                   3227514463 
+    dwHighDateTime:                  30688118 
+PasswordMustChange:             
+    dwLowDateTime:                   2337257055 
+    dwHighDateTime:                  30696366 
+EffectiveName:                   u'superuser' 
+FullName:                        u'' 
+LogonScript:                     u'' 
+ProfilePath:                     u'' 
+HomeDirectory:                   u'' 
+HomeDirectoryDrive:              u'' 
+LogonCount:                      40 
+BadPasswordCount:                0 
+UserId:                          500 
+PrimaryGroupId:                  513 
+GroupCount:                      5 
+GroupIds:                       
+    [
+         
+        RelativeId:                      513 
+        Attributes:                      7 ,
+         
+        RelativeId:                      520 
+        Attributes:                      7 ,
+         
+        RelativeId:                      512 
+        Attributes:                      7 ,
+         
+        RelativeId:                      519 
+        Attributes:                      7 ,
+         
+        RelativeId:                      518 
+        Attributes:                      7 ,
+    ] 
+UserFlags:                       32 
+UserSessionKey:                 
+    Data:                            '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00' 
+LogonServer:                     u'forest-a-dc' 
+LogonDomainName:                 u'forest-a' 
+LogonDomainId:                  
+    Revision:                        1 
+    SubAuthorityCount:               4 
+    IdentifierAuthority:             '\x00\x00\x00\x00\x00\x05' 
+    SubAuthority:                   
+        [
+             21,
+             3286968501,
+             24975625,
+             1618430583,
+        ] 
+LMKey:                           '\x00\x00\x00\x00\x00\x00\x00\x00' 
+UserAccountControl:              16 
+SubAuthStatus:                   0 
+LastSuccessfulILogon:           
+    dwLowDateTime:                   0 
+    dwHighDateTime:                  0 
+LastFailedILogon:               
+    dwLowDateTime:                   0 
+    dwHighDateTime:                  0 
+FailedILogonCount:               0 
+Reserved3:                       0 
+SidCount:                        1 
+ExtraSids:                      
+    [
+         
+        Sid:                            
+            Revision:                        1 
+            SubAuthorityCount:               1 
+            IdentifierAuthority:             '\x00\x00\x00\x00\x00\x12' 
+            SubAuthority:                   
+                [
+                     1,
+                ] 
+        Attributes:                      7 ,
+    ] 
+ResourceGroupDomainSid:          NULL 
+ResourceGroupCount:              0 
+ResourceGroupIds:                NULL
+################################################################################
+TYPE 0xa
+
+PAC_CLIENT_INFO
+ClientId: {131820291180000000}
+NameLength: {18}
+_Name: {18}
+Name: {'s\x00u\x00p\x00e\x00r\x00u\x00s\x00e\x00r\x00'}
+
+################################################################################
+TYPE 0xc
+
+UPN_DNS_INFO
+UpnLength: {48}
+UpnOffset: {16}
+DnsDomainNameLength: {28}
+DnsDomainNameOffset: {64}
+Flags: {1}
+FOREST-A.LOCAL
+
+################################################################################
+TYPE 0x6
+
+PAC_SIGNATURE_DATA
+SignatureType: {16}
+Signature: {'-%\xc6\x95\xd5\xc8p[\x7f\x1bC\x04'}
+
+################################################################################
+TYPE 0x7
+
+PAC_SIGNATURE_DATA
+SignatureType: {-138}
+Signature: {'F4c\x03\xdc\xa7\xde\xe25\xd5\\\x11\xd8\xadm\xe2'}
+
+################################################################################
