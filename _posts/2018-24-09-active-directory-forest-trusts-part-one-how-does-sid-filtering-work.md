@@ -60,7 +60,7 @@ Extra SIDS:
   ->   S-1-18-1
 ```
 
-This is a pretty default PAC. We see we are a member of several groups, and since this is the Administrator account (ID 500, although it has a different name) of Forest A we're currently testing with, it is a member of several default admin groups, such as Domain Admins (512) and Enterprise Admins (513). We also have the Extra SID S-1-18-1, which indicates we are authenticating based on proof of [possession of credentials](https://msdn.microsoft.com/en-us/library/cc980032).
+This is a pretty default PAC. We see we are a member of several groups, and since this is the Administrator account (ID 500, although it has a different name) of Forest A we're currently testing with, it is a member of several default admin groups, such as Domain Admins (512) and Enterprise Admins (519). We also have the Extra SID S-1-18-1, which indicates we are authenticating based on proof of [possession of credentials](https://msdn.microsoft.com/en-us/library/cc980032).
 
 To decrypt the second TGT, we need to change the key from the `krbtgt` account to the one of the `forest-b$` account, which is the inter-realm trust key. In this case the PAC is encrypted with RC4, which uses the NT hash as input (yes, that one you use for passing-the-hash). This is default unless the box "The other domain supports Kerberos AES Encryption" is checked. As is visible in the [raw dump](/assets/raw/tgt2.txt), the PAC didn't change, supporting the assumption that the DC just re-encrypts the PAC as part of the ticket with the inter-realm trust key for Forest B.
 
