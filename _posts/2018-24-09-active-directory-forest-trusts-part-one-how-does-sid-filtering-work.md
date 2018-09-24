@@ -109,7 +109,7 @@ Let's break down this command. We are creating a golden ticket in `forest-a`, si
 
 ![creating a golden ticket with Mimikatz](/assets/img/foresttrusts/mimikatz-trust.png){: .align-center}
 
-The `/ptt` flag will inject the ticket in memory, and upon browsing to `\\forest-b-server.forest-b.local` we don't see any error message, indicating the ticket was successfully used to access a resource in `forest-b`. We export the tickets as before and decrypt them the same way as the previous paragraph.
+The `/ptt` flag will inject the ticket in memory, and upon browsing to `\\forest-b-server.forest-b.local` we don't see any error message, indicating the ticket was successfully used to access a resource in `forest-b`. We export the tickets as before and decrypt them the same way as the previous section.
 
 The TGT for `forest-a` contains the expected SIDs:
 
@@ -299,6 +299,6 @@ The tools used in this post are available as proof-of-concept at [my GitHub](htt
 ## References/thanks:
 - The Microsoft documentation on MSDN
 - All blogs/sites already linked before in this article
-- <https://blogs.msmvps.com/acefekay/2016/09/21/kerberos-authentication-sequence-across-trusts/>
+- [Kerberos Autentication Across trusts](https://blogs.msmvps.com/acefekay/2016/09/21/kerberos-authentication-sequence-across-trusts/) by Ace Fekay
 - Special thanks to the work of [Sean Metcalf](https://twitter.com/PyroTek3), [Will](https://twitter.com/harmj0y) and [Benjamin Delphy](https://twitter.com/gentilkiwi) on this topic.
 - Thanks to [Alberto Solino](https://twitter.com/agsolino) for the huge amount of time he spends on building and maintaining [impacket](https://github.com/CoreSecurity/impacket)
