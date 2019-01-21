@@ -17,7 +17,7 @@ This blog combines a few known vulnerabilities and known protocol weaknesses int
 The main vulnerability here is that Exchange has high privileges in the Active Directory domain. The `Exchange Windows Permissions` group has `WriteDacl` access on the Domain object in Active Directory, which enables any member of this group to modify the domain privileges, among which is the privilege to perform DCSync operations. Users or computers with this privilege can perform synchronization operations that are normally used by Domain Controllers to replicate, which allows attackers to synchronize all the hashed passwords of users in the Active Directory. This has been covered by several researchers (see the references section at the end of this post), and I've written about it with my Fox-IT colleague Rindert [last year](https://blog.fox-it.com/2018/04/26/escalating-privileges-with-acls-in-active-directory/). With that post I also released an update to [ntlmrelayx](https://github.com/SecureAuthCorp/impacket/blob/master/examples/ntlmrelayx.py) that adds the possibility to perform these Access Control List (ACL) based attack while NTLM relaying.
 
 ## NTLM relaying machine accounts
-NTLM relaying has been around for a while. Previously, the main focus of this was relaying NTLM authentication over SMB in order to get code execution on other hosts. While this unfortunately remains a possibility in many company networks that are not hardened against this by enabling SMB signing, other protocols are also vulnerable to relaying. The in my opinion most interesting protocol for this is LDAP, which can be used to read and modify objects in the (Active) directory. If you need a refresher about NTLM relaying, you can read about it in [a blog](https://www.fox-it.com/en/insights/blogs/blog/inside-windows-network/) I wrote a while ago. The short version is that unless mitigations are applied, it is possible to pass authentication that is performed (automatically) by Windows when it connects to the attacker's machine on to other machines in the network, as is displayed in the image below:
+NTLM relaying has been around for a while. Previously, the main focus of this was relaying NTLM authentication over SMB in order to get code execution on other hosts. While this unfortunately remains a possibility in many company networks that are not hardened against this by enabling SMB signing, other protocols are also vulnerable to relaying. The most interesting protocol for this is, in my opinion, LDAP, which can be used to read and modify objects in the (Active) directory. If you need a refresher about NTLM relaying, you can read about it in [a blog](https://www.fox-it.com/en/insights/blogs/blog/inside-windows-network/) I wrote a while ago. The short version is that unless mitigations are applied, it is possible to pass authentication that is performed (automatically) by Windows when it connects to the attacker's machine on to other machines in the network, as is displayed in the image below:
 
 ![NTLM relaying](/assets/img/privexchange/ntlm-auth.svg){: .align-center}
 
@@ -55,9 +55,9 @@ INFO: API call was successful
 ```
 After a minute (which is the value supplied for the push notification) we see the connection coming in at ntlmrelayx, which gives our user DCSync privileges:
 
-![ntlmrelayx performing privesc](/assets/img/privexchange/ntlmrelay-exchange.png)
+![ntlmrelayx performing privesc](/assets/img/privexchange/ntlmrelay-exchange.png){: .align-center}
 We confirm the DCSync rights are in place with secretsdump:
-![dumping hashes](/assets/img/privexchange/secretsdump-hashes.png)
+![dumping hashes](/assets/img/privexchange/secretsdump-hashes.png){: .align-center}
 
 With all the hashed password of all Active Directory users, the attacker can create golden tickets to impersonate any user, or use any users password hash to authenticate to any service accepting NTLM or Kerberos authentication in the domain.
 
@@ -66,16 +66,16 @@ I mentioned previously that relaying from SMB to LDAP does not work, which is al
 
 The difference between NTLM authentication in SMB and HTTP lies in the flags that are negotiated by default. The problematic part is the `NTLMSSP_NEGOTIATE_SIGN` flag (`0x00000010`), documented in [MS-NLMP section 2.2.2.5](https://msdn.microsoft.com/en-us/library/cc236650.aspx). NTLM authentication over HTTP does not set this flag by default, but if it is used over SMB this flag will be set by default:
 
-![SMB with signing flag set](/assets/img/privexchange/smbtraffic.png)
+![SMB with signing flag set](/assets/img/privexchange/smbtraffic.png){: .align-center}
 
 When we relay this to LDAP the authentication will succeed, but LDAP will expect all the messages to be signed with a session key derived from the password (which we don't have in a relay attack). It will thus ignore any messages without signature, causing our attack to fail.
 One may wonder if it is possible to modify these flags in transit, such that signing is not negotiated. This won't work on modern versions of Windows since they will include a MIC (Message Integrity Code) by default, which is a signature based on all 3 NTLM messages, so any modification in any of the messages will make it invalid.
 
-![SMB with signing flag set](/assets/img/privexchange/ntlm-mic.png)
+![SMB with signing flag set](/assets/img/privexchange/ntlm-mic.png){: .align-center}
 
 Can we remove the MIC? Well yes, we can, since it is not in a protected part of the NTLM message. There is however one last protection in NTLM authentication (NTLMv2 only) that prevents this: Deep within the NTLMv2 response, which is in itself signed with the victim's password, there is an `AV_PAIR` structure which is called `MsvAvFlags`. When this field has the value `0x0002`, it indicates that the client sent a MIC along with the type 3 message. 
 
-![SMB with signing flag set](/assets/img/privexchange/micflag.png)
+![SMB with signing flag set](/assets/img/privexchange/micflag.png){: .align-center}
 
 Modifying the NTLMv2 response will invalidate the authentication, so we can't remove this flags field. The flag field indicates a MIC was calculated and included, which will make the target server validate the MIC, which in turn validates that all 3 messages were not modified in transit, and thus we can't remove the signing flag.
 
@@ -85,7 +85,7 @@ This holds true for (I think) only the Microsoft implementation of NTLM. Custom 
 In the previous section we used compromised credentials to perform the first step of the attack. If an attacker is only in a position to perform a network attack, but doesn't have any credentials, it is still possible to trigger Exchange to authenticate. If we perform a SMB to HTTP (or HTTP to HTTP) relay attack (using LLMNR/NBNS/mitm6 spoofing) we can relay the authentication of a user in the same network segment to Exchange EWS and use their credentials to trigger the callback (thanks to [Mark](https://twitter.com/infosec_kb) for bringing this up!).
 I've included a small modified `httpattack.py` which you can use with ntlmrelayx to perform the attack from a network perspective without any credentials (you just need to modify your attacker host since it is hardcoded in the file):
 
-![Relaying NTLM authentication to EWS](/assets/img/privexchange/ews-relay.png)
+![Relaying NTLM authentication to EWS](/assets/img/privexchange/ews-relay.png){: .align-center}
 
 # Mitigations
 This attack depends on various components to work. In previous blogs I've already highlighted several defenses [against NTLM relaying](https://www.fox-it.com/en/insights/blogs/blog/inside-windows-network/) and against [relaying to LDAP specifically](https://blog.fox-it.com/2018/04/26/escalating-privileges-with-acls-in-active-directory/).
