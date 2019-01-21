@@ -24,7 +24,7 @@ repository: dirkjanm/dirkjanm.github.io
 
 # Build settings
 markdown: kramdown
-remote_theme: "mmistakes/minimal-mistakes"
+remote_theme: "mmistakes/minimal-mistakes@4.13.0"
 plugins:
   - jekyll-feed
 
