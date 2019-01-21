@@ -119,7 +119,6 @@ The following blogs, whitepapers and research offer more information about these
 - [Playing with relayed credentials](https://www.secureauth.com/blog/playing-relayed-credentials) by @agsolino
 
 ## Other references
-- <https://www.blackhat.com/docs/us-17/wednesday/us-17-Robbins-An-ACE-Up-The-Sleeve-Designing-Active-Directory-DACL-Backdoors-wp.pdf/>
 - [MS-NLMP](https://msdn.microsoft.com/en-us/library/cc236621.aspx)
 - [ZDI post on this issue which discusses this Exchange API](https://www.zerodayinitiative.com/blog/2018/12/19/an-insincere-form-of-flattery-impersonating-users-on-microsoft-exchange)
 - [Remote NTLM Relaying through meterpreter](https://diablohorn.com/2018/08/25/remote-ntlm-relaying-through-meterpreter-on-windows-port-445/) which discusses how to relay through a pivot host remotely.
