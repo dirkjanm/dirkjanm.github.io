@@ -97,13 +97,17 @@ The most important mitigations applicable to this attack are:
 - Enable [Extended Protection for Authentication](https://msdn.microsoft.com/en-us/library/dd767318%28v=vs.90%29.aspx) on the Exchange endpoints in IIS (but not the Exchange Back End ones, this will break Exchange). This will verify the channel binding parameters in the NTLM authentication, which ties NTLM authentication to a TLS connection and prevent relaying to Exchange web services.
 - Remove the registry key which makes relaying back to the Exchange server possible, as discussed in Microsofts [mitigation for CVE-2018-8518](https://portal.msrc.microsoft.com/en-US/security-guidance/advisory/CVE-2018-8581).
 - Enforce SMB signing on Exchange servers (and preferable all other servers and workstations in the domain) to prevent cross-protocol relay attacks to SMB.
+- If EWS push/pull subscriptions aren't used, they can be disabled by setting the EWSMaxSubscriptions to 0 with a [throttling policy](https://docs.microsoft.com/en-us/powershell/module/exchange/server-health-and-performance/set-throttlingpolicy?view=exchange-ps), as discovered by @gentilkiwi [here](https://twitter.com/gentilkiwi/status/1088599133986975755). I haven't tested how much these are used by legitimate applications, so testing it with a small user scope is recommended.
 
 # The tools / affected versions
 The proof-of concept tools can be found at <https://github.com/dirkjanm/PrivExchange>. They have been tested on the following Exchange/Windows versions:
 - Exchange 2013 (CU21) on Server 2012R2, relayed to a Server 2016 DC (all fully patched)
 - Exchange 2016 (CU11) on Server 2016, relayed to a Server 2019 DC (all fully patched)
+- Exchange 2019 on Server 2019, relayed to a Server 2019 DC (thanks [@gentilkiwi](https://twitter.com/gentilkiwi/status/1088581788413374465) for testing)
 
-Both the above Exchange servers were installed using Shared permission mode (which is the default), but according to [this writeup](https://github.com/gdedrouas/Exchange-AD-Privesc/blob/master/DomainObject/DomainObject.md) RBAC split permissions deployment is also vulnerable (I haven't personally tested this).
+The above Exchange servers were installed using Shared permission mode (which is the default), but according to [this writeup](https://github.com/gdedrouas/Exchange-AD-Privesc/blob/master/DomainObject/DomainObject.md) RBAC split permissions deployment is also vulnerable (I haven't personally tested this).
+
+Exchange 2010 SP3 seems to be **not** affected, in my lab this version negotiated signing similar to SMB as described above, which breaks the relaying attack (thanks to [@lean0x2f](https://twitter.com/lean0x2f/status/1088441988326801408) for raising this). Both version `14.3.435.0` (latest update at the time of writing) and `14.3.123.4` show this behaviour.
 
 # Resources / References
 The following blogs, whitepapers and research offer more information about these attacks:
