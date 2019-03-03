@@ -4,7 +4,7 @@ classes: wide
 title:  "Abusing Exchange: One API call away from Domain Admin"
 date:   2019-01-21 19:08:57 +0100
 ---
-In most organisations using Active Directory and Exchange, Exchange servers have such high privileges that being an Administrator on an Exchange server is enough to escalate to Domain Admin. Recently I came across a blog from the ZDI, in which they detail a way to let Exchange authenticate to attackers using NTLM over HTTP. This can be combined with an NTLM relay attack to escalate from any user with a mailbox to Domain Admin in probably 90% of the organisations I've seen that use Exchange. This attack is possible by default and while no patches are available at the point of writing, there are mitigations that can be applied to prevent this privilege escalation. This blog details the attack, some of the more technical details and mitigations, as well as releasing a [proof-of-concept tool](https://github.com/dirkjanm/privexchange/) for this attack which I've dubbed "PrivExchange".
+In most organisations using Active Directory and Exchange, Exchange servers have such high privileges that being an Administrator on an Exchange server is enough to escalate to Domain Admin. Recently I came across a blog from the ZDI, in which they detail a way to let Exchange authenticate to attackers using NTLM over HTTP. This can be combined with an NTLM relay attack to escalate from any user with a mailbox to Domain Admin in probably 90% of the organisations I've seen that use Exchange. This attack is possible by default ~~and while no patches are available at the point of writing~~, there are mitigations that can be applied to prevent this privilege escalation. This blog details the attack, some of the more technical details and mitigations, as well as releasing a [proof-of-concept tool](https://github.com/dirkjanm/privexchange/) for this attack which I've dubbed "PrivExchange". **Update**: Patches for PrivExchange are available, see the section "Released updates".
 
 # Combining known vulnerabilities in a new way
 This blog combines a few known vulnerabilities and known protocol weaknesses into a new attack. There are 3 components which are combined to escalate from any user with a mailbox to Domain Admin access:
@@ -91,7 +91,7 @@ I've included a small modified `httpattack.py` which you can use with ntlmrelayx
 This attack depends on various components to work. In previous blogs I've already highlighted several defenses [against NTLM relaying](https://www.fox-it.com/en/insights/blogs/blog/inside-windows-network/) and against [relaying to LDAP specifically](https://blog.fox-it.com/2018/04/26/escalating-privileges-with-acls-in-active-directory/).
 
 The most important mitigations applicable to this attack are:
-- Remove the unnecessary high privileges that Exchange has on the Domain object (see below for some links on this).
+- Remove the unnecessary high privileges that Exchange has on the Domain object by running `setup.exe /PrepareAD` from a patched Exchange CU (see below for more info).
 - Enable LDAP signing and [enable LDAP channel binding](https://support.microsoft.com/en-us/help/4034879/how-to-add-the-ldapenforcechannelbinding-registry-entry) to prevent relaying to LDAP and LDAPS respectively
 - Block Exchange servers from making connections to workstations on arbitrary ports.
 - Enable [Extended Protection for Authentication](https://msdn.microsoft.com/en-us/library/dd767318%28v=vs.90%29.aspx) on the Exchange endpoints in IIS (but not the Exchange Back End ones, this will break Exchange). This will verify the channel binding parameters in the NTLM authentication, which ties NTLM authentication to a TLS connection and prevent relaying to Exchange web services.
@@ -109,11 +109,24 @@ The above Exchange servers were installed using Shared permission mode (which is
 
 Exchange 2010 SP3 seems to be **not** affected, in my lab this version negotiated signing similar to SMB as described above, which breaks the relaying attack (thanks to [@lean0x2f](https://twitter.com/lean0x2f/status/1088441988326801408) for raising this). Both version `14.3.435.0` (latest update at the time of writing) and `14.3.123.4` show this behaviour.
 
+# Released updates
+On February 12th 2019, Microsoft released updates for Exchange which resolve these issues by removing the automatic authentication Exchange performs when sending out notifications.
+This concerns the following Exchange versions:
+
+- Exchange Server 2019 Cumulative Update  (KB4471391)
+- Exchange Server 2016 Cumulative Update 12
+- Exchange Server 2013 Cumulative Update 22
+- Exchange Server 2010 Service Pack 3 Update Rollup 26
+
+Furthermore, they reviewed the required permissions for Exchange and decided to **reduce** them, so that Exchange no longer has excessively high privileges in AD. For existing Exchange installations, it is required to run `Setup.exe /PrepareAD` again from an updated installer, otherwise the privileges will not be removed. For Exchange 2010 the removal of privileges has to be performed manually, instructions are available in [KB4490059](https://support.microsoft.com/en-us/help/4490059/using-shared-permissions-model-to-run-exchange-server).
+
+More information is available on the [Microsoft Exchange blog](https://blogs.technet.microsoft.com/exchange/2019/02/12/released-february-2019-quarterly-exchange-updates/) about this patch.
+
 # Resources / References
 The following blogs, whitepapers and research offer more information about these attacks:
 
 ## Mitigation resources
-- <https://github.com/gdedrouas/Exchange-AD-Privesc/blob/master/DomainObject/Fix-DomainObjectDACL.ps1> (Removing dangerous Exchange permissions with PowerShell)
+- ~~<https://github.com/gdedrouas/Exchange-AD-Privesc/blob/master/DomainObject/Fix-DomainObjectDACL.ps1> (Removing dangerous Exchange permissions with PowerShell)~~ Update: Use [Microsoft's recommended fix](https://blogs.technet.microsoft.com/exchange/2019/02/12/released-february-2019-quarterly-exchange-updates/) for this.
 - <https://www.blackhat.com/docs/webcast/04262018-Webcast-Toxic-Waste-Removal-by-Andy-Robbins.pdf> (Identifying and removing dangerous Exchange permissions, by @\_wald0)
 - [ACL privilege escalation research](https://www.blackhat.com/docs/us-17/wednesday/us-17-Robbins-An-ACE-Up-The-Sleeve-Designing-Active-Directory-DACL-Backdoors-wp.pdf) by @\_wald0 and @harmj0y
 
