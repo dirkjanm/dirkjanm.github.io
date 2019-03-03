@@ -83,12 +83,12 @@ This holds true for (I think) only the Microsoft implementation of NTLM. Custom 
 
 # Performing the attack without any credentials altogether
 In the previous section we used compromised credentials to perform the first step of the attack. If an attacker is only in a position to perform a network attack, but doesn't have any credentials, it is still possible to trigger Exchange to authenticate. If we perform a SMB to HTTP (or HTTP to HTTP) relay attack (using LLMNR/NBNS/mitm6 spoofing) we can relay the authentication of a user in the same network segment to Exchange EWS and use their credentials to trigger the callback (thanks to [Mark](https://twitter.com/infosec_kb) for bringing this up!).
-I've included a small modified `httpattack.py` which you can use with ntlmrelayx to perform the attack from a network perspective without any credentials (you just need to modify your attacker host since it is hardcoded in the file):
+I've included a small modified `httpattack.py` which you can use with ntlmrelayx to perform the attack from a network perspective without any credentials (you just need to modify your attacker host since it is hard-coded in the file):
 
 ![Relaying NTLM authentication to EWS](/assets/img/privexchange/ews-relay.png){: .align-center}
 
 # Mitigations
-This attack depends on various components to work. In previous blogs I've already highlighted several defenses [against NTLM relaying](https://www.fox-it.com/en/insights/blogs/blog/inside-windows-network/) and against [relaying to LDAP specifically](https://blog.fox-it.com/2018/04/26/escalating-privileges-with-acls-in-active-directory/).
+This attack depends on various components to work. In previous blogs I've already highlighted several defences [against NTLM relaying](https://www.fox-it.com/en/insights/blogs/blog/inside-windows-network/) and against [relaying to LDAP specifically](https://blog.fox-it.com/2018/04/26/escalating-privileges-with-acls-in-active-directory/).
 
 The most important mitigations applicable to this attack are:
 - Remove the unnecessary high privileges that Exchange has on the Domain object by running `setup.exe /PrepareAD` from a patched Exchange CU (see below for more info).
@@ -105,7 +105,7 @@ The proof-of concept tools can be found at <https://github.com/dirkjanm/PrivExch
 - Exchange 2016 (CU11) on Server 2016, relayed to a Server 2019 DC (all fully patched)
 - Exchange 2019 on Server 2019, relayed to a Server 2019 DC (thanks [@gentilkiwi](https://twitter.com/gentilkiwi/status/1088581788413374465) for testing)
 
-The above Exchange servers were installed using Shared permission mode (which is the default), but according to [this writeup](https://github.com/gdedrouas/Exchange-AD-Privesc/blob/master/DomainObject/DomainObject.md) RBAC split permissions deployment is also vulnerable (I haven't personally tested this).
+The above Exchange servers were installed using Shared permission mode (which is the default), but according to [this write-up](https://github.com/gdedrouas/Exchange-AD-Privesc/blob/master/DomainObject/DomainObject.md) RBAC split permissions deployment is also vulnerable (I haven't personally tested this).
 
 Exchange 2010 SP3 seems to be **not** affected, in my lab this version negotiated signing similar to SMB as described above, which breaks the relaying attack (thanks to [@lean0x2f](https://twitter.com/lean0x2f/status/1088441988326801408) for raising this). Both version `14.3.435.0` (latest update at the time of writing) and `14.3.123.4` show this behaviour.
 
@@ -113,7 +113,7 @@ Exchange 2010 SP3 seems to be **not** affected, in my lab this version negotiate
 On February 12th 2019, Microsoft released updates for Exchange which resolve these issues by removing the automatic authentication Exchange performs when sending out notifications.
 This concerns the following Exchange versions:
 
-- Exchange Server 2019 Cumulative Update  (KB4471391)
+- Exchange Server 2019 Cumulative Update
 - Exchange Server 2016 Cumulative Update 12
 - Exchange Server 2013 Cumulative Update 22
 - Exchange Server 2010 Service Pack 3 Update Rollup 26
@@ -123,7 +123,7 @@ Furthermore, they reviewed the required permissions for Exchange and decided to 
 More information is available on the [Microsoft Exchange blog](https://blogs.technet.microsoft.com/exchange/2019/02/12/released-february-2019-quarterly-exchange-updates/) about this patch.
 
 # Resources / References
-The following blogs, whitepapers and research offer more information about these attacks:
+The following blogs, white papers and research offer more information about these attacks:
 
 ## Mitigation resources
 - ~~<https://github.com/gdedrouas/Exchange-AD-Privesc/blob/master/DomainObject/Fix-DomainObjectDACL.ps1> (Removing dangerous Exchange permissions with PowerShell)~~ Update: Use [Microsoft's recommended fix](https://blogs.technet.microsoft.com/exchange/2019/02/12/released-february-2019-quarterly-exchange-updates/) for this.
@@ -139,4 +139,4 @@ The following blogs, whitepapers and research offer more information about these
 - [MS-NLMP](https://msdn.microsoft.com/en-us/library/cc236621.aspx)
 - [ZDI post on this issue which discusses this Exchange API](https://www.zerodayinitiative.com/blog/2018/12/19/an-insincere-form-of-flattery-impersonating-users-on-microsoft-exchange)
 - [Remote NTLM Relaying through meterpreter](https://diablohorn.com/2018/08/25/remote-ntlm-relaying-through-meterpreter-on-windows-port-445/) which discusses how to relay through a pivot host remotely.
-- [My HITB slided on ACL attacks](https://www.slideshare.net/DirkjanMollema/aclpwn-active-directory-acl-exploitation-with-bloodhound)
+- [My HITB slides on ACL attacks](https://www.slideshare.net/DirkjanMollema/aclpwn-active-directory-acl-exploitation-with-bloodhound)
