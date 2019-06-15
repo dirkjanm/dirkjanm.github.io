@@ -113,7 +113,7 @@ Exchange 2010 SP3 seems to be **not** affected, in my lab this version negotiate
 On February 12th 2019, Microsoft released updates for Exchange which resolve these issues by removing the automatic authentication Exchange performs when sending out notifications.
 This concerns the following Exchange versions:
 
-- Exchange Server 2019 Cumulative Update
+- Exchange Server 2019 Cumulative Update 1
 - Exchange Server 2016 Cumulative Update 12
 - Exchange Server 2013 Cumulative Update 22
 - Exchange Server 2010 Service Pack 3 Update Rollup 26
