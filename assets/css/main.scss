@@ -19,3 +19,10 @@ html {
 .archive__item-excerpt {
     font-size: 0.85em;
 }
+.greedy-nav .visible-links {
+	justify-content: flex-start;
+}
+
+article.page .page__content p {
+    font-size: 0.7em;
+}
