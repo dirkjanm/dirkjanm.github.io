@@ -115,7 +115,7 @@ Microsoft Office 365 Portal | 00000006-0000-0ff1-ce00-000000000000 | **AuditLog.
 Azure AD Identity Governance Insights | 58c746b0-a0b0-4647-a8f6-12dde5981638 | **AuditLog.Read.All**
 Kaizala Sync Service | d82073ec-4d7c-4851-9c5d-5d97a911d71d | **Group.ReadWrite.All**
 
-So the TL;DR is that you compromise an Application Administrator account or the on-premise Sync Account you can read and modify directory settings, group memberships, user accounts, SharePoint sites and OneDrive files. This is done by assigning credentials to an existing service principal with these permissions and then impersonating these applications.
+So the TL;DR is that if you compromise an Application Administrator account or the on-premise Sync Account you can read and modify directory settings, group memberships, user accounts, SharePoint sites and OneDrive files. This is done by assigning credentials to an existing service principal with these permissions and then impersonating these applications.
 
 You can exploit this by assigning a password or [certificate](https://docs.microsoft.com/en-us/powershell/azure/active-directory/signing-in-service-principal?view=azureadps-2.0) to a service principal and then logging in as that service principal. I use Python for logging in with a service principal password since the PowerShell module doesn't support this (it does support certificates but that's more complex to set up).
 
