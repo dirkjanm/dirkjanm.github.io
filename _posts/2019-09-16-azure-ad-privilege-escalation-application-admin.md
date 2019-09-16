@@ -10,7 +10,7 @@ During both my DEF CON and Troopers [talks](/talks/) I mentioned a vulnerability
 In Azure AD there is a distinction between Applications and Service Principals. An application is the configuration of an application, whereas the Service Principal is the security object that can actually have privileges in the Azure Directory. This can be quite confusing as in the documentation they are usually both called applications. The Azure portal makes it even more confusing by calling Service Principals "Enterprise Applications" and hiding most properties of the service principals from view. For Office 365 and other Microsoft applications, the Application definition is present in one of Microsoft's dedicated Azure directories. In an Office 365 tenant, service principals are created for these applications automatically, giving an Office 365 Azure AD about 200 service principals by default that all have different pre-assigned permissions.
 
 # Application roles
-The way Azure AD applications work is that they can define roles, which can then be assigned to users, groups or service principals. If you read the documentation for the [Microsoft Graph permissions](https://docs.microsoft.com/en-us/graph/permissions-reference) you can see permissions such as `Directory.Read.All`. These are actually roles defined in the Microsoft Graph application, which can be assigned to service principals. In the documentation and Azure Portal, these roles are called "Application permissions", but we're sticking to the API terminology here. The roles defined in the Microsoft graph application can be queried using the AzureAD Powershell module:
+The way Azure AD applications work is that they can define roles, which can then be assigned to users, groups or service principals. If you read the documentation for the [Microsoft Graph permissions](https://docs.microsoft.com/en-us/graph/permissions-reference) you can see permissions such as `Directory.Read.All`. These are actually roles defined in the Microsoft Graph application, which can be assigned to service principals. In the documentation and Azure Portal, these roles are called "Application permissions", but we're sticking to the API terminology here. The roles defined in the Microsoft graph application can be queried using the AzureAD PowerShell module:
 
 ![Microsoft Graph roles](/assets/img/azuread/msgraphroles.png)
 
@@ -18,7 +18,7 @@ When we try to query for applications that have been assigned one or more roles,
 
 ![Role assignments](/assets/img/azuread/msgraphapproleassignments.png)
 
-There is however no way to query within an Azure AD which roles have been assigned to default Microsoft applications. So to enumerate this we have to get a bit creative. An Application Administrator (or the On-premise Sync account if you are escalating from on-premise to the cloud) can assign credentials to an application, after which this application can log in using the **client credential grant** OAuth2 flow. Assigning credentials is possible using Powershell:
+There is however no way to query within an Azure AD which roles have been assigned to default Microsoft applications. So to enumerate this we have to get a bit creative. An Application Administrator (or the On-premise Sync account if you are escalating from on-premise to the cloud) can assign credentials to an application, after which this application can log in using the **client credential grant** OAuth2 flow. Assigning credentials is possible using PowerShell:
 
 ```powershell
 PS C:\> $sp = Get-AzureADServicePrincipal -searchstring "Microsoft StaffHub"
@@ -117,9 +117,9 @@ Kaizala Sync Service | d82073ec-4d7c-4851-9c5d-5d97a911d71d | **Group.ReadWrite.
 
 So the TL;DR is that you compromise an Application Administrator account or the on-premise Sync Account you can read and modify directory settings, group memberships, user accounts, SharePoint sites and OneDrive files. This is done by assigning credentials to an existing service principal with these permissions and then impersonating these applications.
 
-You can exploit this by assigning a password or [certificate](https://docs.microsoft.com/en-us/powershell/azure/active-directory/signing-in-service-principal?view=azureadps-2.0) to a service principal and then logging in as that service princpal. I use Python for logging in with a service principal password since the Powershell module doesn't support this (it does support certificates but that's more complex to set up).
+You can exploit this by assigning a password or [certificate](https://docs.microsoft.com/en-us/powershell/azure/active-directory/signing-in-service-principal?view=azureadps-2.0) to a service principal and then logging in as that service principal. I use Python for logging in with a service principal password since the PowerShell module doesn't support this (it does support certificates but that's more complex to set up).
 
-The below command shows that when logging in with such a certificate, we do have the power to modify group memberships (somethign the application admin normally doesn't have):
+The below command shows that when logging in with such a certificate, we do have the power to modify group memberships (something the application admin normally doesn't have):
 
 ```
 PS C:\> add-azureadgroupmember -RefObjectId 2730f622-db95-4b40-9be7-6d72b6c1dad4 -ObjectId 3cf7196f-9d57-48ee-8912-dbf50803a4d8
