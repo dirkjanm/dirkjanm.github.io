@@ -19,7 +19,7 @@ Apart from the fact that someone on the Teams team likes wine, there are some re
 ## Rogue Wifi network
 If a victim connects to an attacker controlled Wifi network, they can use automatic captive portal detection to redirect the victim to a site of their choosing. This site can then redirect the victim to the Microsoft online sign-in page using the Microsoft Teams Web Client application ID and the `http://dev.local` reply URL. After logging in the Microsoft Online login page will send the victim to the `dev.local` site. This redirect which will work automatically without any user interaction if the Azure AD environment supports Single Sign On or the user is already signed in. Because the attacker controls the network, and thus controls DNS replies, they can serve the user JavaScript on a page that captures this access token and forwards it to the attacker. There are no security prompts since the website is served over HTTP and thus no TLS certificate verification is used. Here is a demo video in which I use a fully up-to-date Azure AD joined Windows 10 device to connect to a rogue wireless network, which obtains the token allowing access to my email without any user interaction:
 
-<video controls>
+<video width="100%" controls>
   <source src="/assets/raw/replyurlwifi.mp4" type="video/mp4">
 </video> 
 
