@@ -6,6 +6,10 @@ permalink: /talks/
 ---
 
 # Presentations
+### **BlueHat Seattle 2019**: I'm in your cloud... A year of hacking Azure AD 
+**Topic**: Azure AD, Office 365  
+**Links**: [Abstract](https://www.microsoft.com/bluehat) | [Slides (PDF)](/assets/raw/Im%20in%20your%20cloud%20bluehat-v1.0.pdf) | [Demo video](/assets/raw/replyurlwifi.mp4) | [Video Recording](https://www.youtube.com/watch?v=fpUZJxFK72k)
+
 ### **DEF CON 27**: I'm in your cloud... pwning your Azure environment  
 **Topic**: Azure AD, Office 365  
 **Links**: [Abstract](https://www.defcon.org/html/defcon-27/dc-27-speakers.html#Mollema) | [Slides (PDF)](https://media.defcon.org/DEF%20CON%2027/DEF%20CON%2027%20presentations/DEFCON-27-Dirk-jan-Mollema-Im-in-your-cloud-pwning-your-azure-environment.pdf) | [Demo videos](https://media.defcon.org/DEF%20CON%2027/DEF%20CON%2027%20presentations/DEFCON-27-Dirk-jan-Mollema-Demo-Videos/) | Video Recording (Not yet available)
