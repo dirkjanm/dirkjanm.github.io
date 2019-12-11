@@ -17,7 +17,7 @@ For my TROOPERS talk I spent some time figuring out how Azure AD connect stores 
 
 In the database AAD connect stores the configuration including the accounts that have privileges in Azure and in the on-prem AD. The sensitive properties of these accounts (including the passwords) are stored as encrypted data. To decrypt the data, AAD connect uses a keyset that is stored encrypted in the registry. The keyset ID is stored in the database and this keyset is stored in the registry in `HKLM\Software\Microsoft\Ad Sync\Shared\[keysetid]`. The keyset can be decrypted using DPAPI and some additional entropy that is also stored in the database, using a DPAPI masterkey which in turn can be decrypted with the SYSTEM DPAPI key. Once the keyset is decrypted the keys can be read from there and used to decrypt the encrypted properties from the database. This whole process is quite abstract so here's a diagram showing the whole flow:
 
-![AD Sync decrypt flow](/assets/img/dpapi/dpapiflow.svg)
+![AD Sync decrypt flow](/assets/img/dpapi/dpapiflow.svg){: .align-center}
 
 You can make the decryption process as hard or as easy as you want. The easiest method is using the `mcrypt.dll` methods that load the keyset for you and use that to decrypt the data from the database, ignoring the whole proces that happens under water. This does require you to use the dll's from Azure AD Connect and to have them in your path to execute the tool. An alternative method is to query the required data from the database, the keyset from the registry, decrypt it with DPAPI, dump those on the target and then perform the decryption yourself locally. This doesn't require you to have the dll's in your path, but since I am not a C# person I did write the part about decrypting the last bit in Python. In the end this resulted in 3 methods of dumping credentials which I bundled in the [adconnectdump repository](https://github.com/fox-it/adconnectdump) on GitHub, with the main differences shown in the table here:
 
@@ -43,14 +43,14 @@ The third method (for which the ADSyncQuery tool was written) was more of a pers
 
 This whole chain looks like this when executed:
 
-![adconnectdump in action](/assets/img/dpapi/adconnectdump_old.png)
+![adconnectdump in action](/assets/img/dpapi/adconnectdump_old.png){: .align-center}
 
 # The new method
 When I tried this method again a few weeks back I got several errors thrown by the script. A quick investigation showed me that the step where it failed was the registry. The registry key that previously held the keyset simply didn't exist anymore. I couldn't find the key on other places in the registry either.
 
 Whereas previously I was able to use the key export utility included in AD Connect and watch the API calls it made using API Monitor, this time this utility (as well as the ADSyncDecrypt tool) reported the same error and thus didn't get me anywhere. The quickest way for me to debug this was to attach API Monitor to the service and see which API calls the service made in order to find the keyset. Since API Monitor doesn't support attaching to a service start out of the box (if it does I'd love to hear how), I had to attach to the running process as fast as possible after the service started. After a few tries I was pretty sure I was attached early enough to watch the keyset being decrypted using DPAPI:
 
-![keyset dpapi data in api monitor](/assets/img/dpapi/keysetdpapi.png)
+![keyset dpapi data in api monitor](/assets/img/dpapi/keysetdpapi.png){: .align-center}
 
 The keyset still looked pretty similar to how it did before and the encrypted DPAPI data did include the "MMS_ENCRYPTION_KEYSET" string in UTF-16 in the description. While this all was running I used procmon to capture events, but did not find any events that indicated the keyset being read from the registry or from disk. Neither did running procmon on the non-working extraction tools yield useful information about where it was looking, apart from that it tried to query the same registry key as I was, which did not exist.
 
@@ -58,7 +58,7 @@ To make sure the encrypted keyset was not stored anywhere on disk, I even wrote 
 
 At this point I went back to the figurative drawing board and had another look at the API calls made by the AD Connect server. I loaded `mcrypt.dll` into API Monitor and confirmed that AD Connect still used the same functions to load the keyset. The only remaining difference was that the actual AD Connect service was running under the `NT SERVICE\ADSync` user, whereas my tool was running as a domain user with local administrator privileges. So which storage mechanism outside the registry would store data that is only accessible to the user who put it there? How about the Windows Credential Manager (or Credential Vault)? This is a per-user vault which uses DPAPI to encrypted the secrets stored in it. A quick way to verify this theory was to simply dump the credentials in the vault. There are multiple tools for this but since I needed to do this from the context of the `NT SERVICE\ADSync` user I opted for mimikatz, that can impersonate the user by stealing a token from the running service and then access the vault:
 
-![mimikatz vault dump](/assets/img/dpapi/mimikatz_vault.png)
+![mimikatz vault dump](/assets/img/dpapi/mimikatz_vault.png){: .align-center}
 
 This leads us to the conclusion that instead of storing the keyset in the registry, it is now stored in the credential vault of the `NT SERVICE\ADSync` user. So running the gathering scripts as the `NT SERVICE\ADSync` user should make sure the dumping of credentials works again. But this only solved it for the method which executes binaries on the host, and not for the network-only approach, for which I had to dig a bit deeper.
 
@@ -102,7 +102,7 @@ Neither of these was however the correct key to decrypt the masterkey of the vir
 ## The new flow
 To adapt to the new flow, there are some extra layers of crypto and DPAPI that we need to cross, but it is still possible to dump the data via only the network. The new flow looks something like this:
 
-![AD Sync decrypt flow with more DPAPI](/assets/img/dpapi/dpapiflow-new.svg)
+![AD Sync decrypt flow with more DPAPI](/assets/img/dpapi/dpapiflow-new.svg){: .align-center}
 
 In more detail the steps involved are:
 - Stop service / download database / start service just like previously
@@ -113,7 +113,7 @@ In more detail the steps involved are:
 
 And we see that once again the remote extraction of Azure AD Connect credentials is working:
 
-![adconnectdump in action](/assets/img/dpapi/adconnectdump_new.png)
+![adconnectdump in action](/assets/img/dpapi/adconnectdump_new.png){: .align-center}
 
 I've uploaded the new version of adconnectdump to [GitHub](https://github.com/fox-it/adconnectdump). It also still supports the old format of dumping credentials with the --legacy flag.
 
