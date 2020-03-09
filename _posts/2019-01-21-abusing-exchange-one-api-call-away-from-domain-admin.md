@@ -88,7 +88,7 @@ I've included a small modified `httpattack.py` which you can use with ntlmrelayx
 ![Relaying NTLM authentication to EWS](/assets/img/privexchange/ews-relay.png){: .align-center}
 
 # Mitigations
-This attack depends on various components to work. In previous blogs I've already highlighted several defences [against NTLM relaying](https://www.fox-it.com/en/insights/blogs/blog/inside-windows-network/) and against [relaying to LDAP specifically](https://blog.fox-it.com/2018/04/26/escalating-privileges-with-acls-in-active-directory/).
+This attack depends on various components to work. In previous blogs I've already highlighted several defences [against NTLM relaying](https://blog.fox-it.com/2017/05/09/relaying-credentials-everywhere-with-ntlmrelayx/) and against [relaying to LDAP specifically](https://blog.fox-it.com/2018/04/26/escalating-privileges-with-acls-in-active-directory/).
 
 The most important mitigations applicable to this attack are:
 - Remove the unnecessary high privileges that Exchange has on the Domain object by running `setup.exe /PrepareAD` from a patched Exchange CU (see below for more info).

@@ -30,4 +30,4 @@ The following blogs were (co-)authored by me on different platforms/websites:
 2018-04 - [Escalating privileges with ACLs in Active Directory](https://blog.fox-it.com/2018/04/26/escalating-privileges-with-acls-in-active-directory/)  
 2018-04 - [Compromising Citrix ShareFile on-premise via 7 chained vulnerabilities](https://blog.fox-it.com/2018/04/06/compromising-sharefile-on-premise-via-7-chained-vulnerabilities/)  
 2018-01 - [mitm6 - Compromising IPv4 networks via IPv6](https://blog.fox-it.com/2018/01/11/mitm6-compromising-ipv4-networks-via-ipv6/)  
-2017-05 - [Relaying credentials everywhere with ntlmrelayx](https://www.fox-it.com/en/insights/blogs/blog/inside-windows-network/)  
+2017-05 - [Relaying credentials everywhere with ntlmrelayx](https://blog.fox-it.com/2017/05/09/relaying-credentials-everywhere-with-ntlmrelayx/)  
