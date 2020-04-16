@@ -105,7 +105,7 @@ ROADrecon will request all the data available in two phases. The first phase req
 
 In the second phase all the relationships are queried, such as group memberships, application roles, directory role members and application/device owners. Because this is performed per individual group, there is a much larger number of parallel tasks here and thus the speed gains of using `aiohttp` become much larger. To limit the number of objects in memory, ROADrecon regularly flushes the database changes to disk (in chunks of ~1000 changes or new entries). This is not done asynchronously (yet) because in my testing the performance bottleneck seemed to be the HTTP requests rather than the database reads/writes.
 
-Overall this whole process is pretty fast and for sure much faster than dumping everything in serial before I rewrote it to async code. Dumping an Azure AD environment of around 7000 users will take about X seconds. For really large environments that I've tested (~120k users) this will still take quite some time (about 2 hours) because of the number of objects that have to be requested in serial in the first phase of data gathering.
+Overall this whole process is pretty fast and for sure much faster than dumping everything in serial before I rewrote it to async code. Dumping an Azure AD environment of around 5000 users will take about 100 seconds. For really large environments that I've tested (~120k users) this will still take quite some time (about 2 hours) because of the number of objects that have to be requested in serial in the first phase of data gathering.
 
 ```
 (ROADtools) user@localhost:~/ROADtools$ roadrecon gather --mfa
