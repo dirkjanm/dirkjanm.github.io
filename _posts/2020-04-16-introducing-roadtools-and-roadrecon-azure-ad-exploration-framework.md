@@ -5,7 +5,7 @@ title:  "Introducing ROADtools - The Azure AD exploration framework"
 date:   2020-04-16 12:00:00 +0200
 ---
 
-Over the past 1.5 years I've been doing quite a lot of exploration into Azure AD and how it works under the hood. Azure AD is getting more and more common in enterprises, and thus securing it is becoming a bigger topic. Whereas the traditional Windows Server Active Directory already has so much research and community tooling available for it, Azure AD is in my opinion lagging behind in this aspect. In this post I'm introducing the ROADtools framework and it's first tool: ROADrecon. This framework was developed during my research and will hopefully serve as both a useful tool and an extensible framework for anyone that wants to analyse Azure AD, whether that is from a Red Team or a Blue Team perspective. This post is the first in part of a series in which I'll dive into more aspects of Azure AD and the ROADtools framework. Both ROADtools and ROADrecon are free open source tools and available on my [GitHub](https://github.com/dirkjanm/ROADtools). I also did a live stream of most things that are written here that you can [watch on Twitch](https://www.twitch.tv/videos/593788182).
+Over the past 1.5 years I've been doing quite a lot of exploration into Azure AD and how it works under the hood. Azure AD is getting more and more common in enterprises, and thus securing it is becoming a bigger topic. Whereas the traditional Windows Server Active Directory already has so much research and community tooling available for it, Azure AD is in my opinion lagging behind in this aspect. In this post I'm introducing the ROADtools framework and it's first tool: ROADrecon. This framework was developed during my research and will hopefully serve as both a useful tool and an extensible framework for anyone that wants to analyse Azure AD, whether that is from a Red Team or a Blue Team perspective. This post is the first in part of a series in which I'll dive into more aspects of Azure AD and the ROADtools framework. Both ROADtools and ROADrecon are free open source tools and available on my [GitHub](https://github.com/dirkjanm/ROADtools). I also did a live stream of most things that are written here that you can [watch on YouTube](https://www.youtube.com/watch?v=o5QDt30Pw_o).
 
 # Why this framework
 Whenever I find myself in a new network or researching a new topic, I want to know as much information as possible about it, in an easy to digest format. In Active Directory environments, information is relatively simple to query using LDAP, and many tools exist that query this information and transform it into a format that's easier to use for humans. Back when I started writing tools, I wrote a simple tool [ldapdomaindump](https://github.com/dirkjanm/ldapdomaindump) that tried to save all the information it could gather offline, so that I could quickly answer questions like "oh which groups is this user in again" or "do they have a group for system X that could be useful".
@@ -136,7 +136,7 @@ It currently features:
 * Role / OAuth2 permissions assignments
 * MFA overview
 
-Some screenshots (or watch a [live demo here](https://www.twitch.tv/videos/593788182?t=0h47m8s)):
+Some screenshots (or watch a [live demo here](https://youtu.be/o5QDt30Pw_o?t=2838)):
 
 ![ROADrecon homepage](/assets/img/azuread/roadrecon_home.png)
 
@@ -175,7 +175,7 @@ Another plugin that has a lot of potential is the BloodHound plugin. This plugin
 
 ![ROADrecon bloodhound roles](/assets/img/azuread/bloodhound_roles.png)
 
-The BloodHound fork is still in an alpha version and will require some knowledge of Cypher to really get all the information out of it. I know that other people (such as Harmj0y and \_tifkin) have also been working on an Azure AD supporting version of BloodHound, so my hope is that this can be developed further and maybe even merged back into the official BloodHound project.
+The BloodHound fork is still in an alpha version and will require some knowledge of Cypher to really get all the information out of it. I know that other people (such as Harmj0y and tifkin\_) have also been working on an Azure AD supporting version of BloodHound, so my hope is that this can be developed further and maybe even merged back into the official BloodHound project.
 
 # Getting the tools
 ROADtools is available on [GitHub](https://github.com/dirkjanm/ROADtools) under an MIT open source license. Easiest way to install is using PyPi, automatic builds from Git are available in [Azure Pipelines](https://dev.azure.com/dirkjanm/ROADtools/_build/latest?definitionId=19&branchName=master).
