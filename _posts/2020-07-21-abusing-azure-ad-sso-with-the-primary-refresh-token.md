@@ -2,7 +2,7 @@
 layout: single
 classes: wide
 title:  "Abusing Azure AD SSO with the Primary Refresh Token"
-date:   2020-07-11 12:00:00 +0200
+date:   2020-07-21 17:57:00 +0200
 ---
 
 Modern corporate environments often don't solely exist of an on-prem Active Directory. A hybrid setup, where devices are joined to both on-prem AD and Azure AD, or a set-up where they are only joined to Azure AD is getting more common. These hybrid set-ups offer multiple advantages, one of which is the ability to use Single Sign On (SSO) against both on-prem and Azure AD connected resources. To enable this, devices possess a Primary Refresh Token which is a long-term token that is stored on the device, where possible using a TPM for extra security. This blog explains how SSO works with the Primary Refresh Tokens, and what some of the implicit risks are of using SSO. I'll also demonstrate how attackers can abuse this if they have access to a device which is Azure AD joined or Hybrid joined, to obtain long-lived tokens which can be used independently of the device and which will in most cases comply with even the stricter Conditional Access policies. A tool to abuse this and the capabilities to use this with [ROADtools](https://github.com/dirkjanm/ROADtools) are present towards the end of this blog, as well as considerations for defenders.
