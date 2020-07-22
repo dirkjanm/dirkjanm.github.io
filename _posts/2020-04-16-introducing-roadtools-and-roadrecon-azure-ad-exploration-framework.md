@@ -160,7 +160,7 @@ Another one is the Application Roles page, which shows all the privileges that S
 
 ![ROADrecon application roles](/assets/img/azuread/roadrecon_approles.png)
 
-There are some things still in development in the GUI and I plan to add more advanced filtering features later, but the basics are there and overall it feel pretty snappy barring some loading times in large environments.
+There are some things still in development in the GUI and I plan to add more advanced filtering features later, but the basics are there and overall it feels pretty snappy barring some loading times in large environments.
 
 ## ROADrecon plugins - Parsing conditional access policies
 I already mentioned plugins and that the goal is to make it easy for others to also write their own plugins or tools interacting with ROADrecon. An example plugin that I developed together with my colleague Adrien Raulot which has not made its way to the GUI yet is the conditional access policies plugin. As I discussed during my BlueHat talk, conditional access policies are not visible for regular users in the Azure Portal. The internal Azure AD API allows anyone to list them, but their raw format is full of GUIDs that have to be resolved manually. The "policies" plugin for ROADtools parses them into readable format and outputs them to a single static HTML page. Since Conditional Access policies are a pain to explore in Azure AD and require way too many clicks, this file is one of my favourite methods of exploring them. From a Red Team perspective, Conditional Access Policies are the most valuable resource to determine which applications do have stricter access controls such as requiring MFA or a managed device. 
