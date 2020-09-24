@@ -1,0 +1,121 @@
+---
+layout: single
+classes: wide
+title:  "A different way of abusing Zerologon (CVE-2020-1472)"
+date:   2020-09-24 21:00:00 +0200
+---
+
+In August 2020, Microsoft patched CVE-2020-1472 aka Zerologon. This is in my opinion one of the most critical Active Directory vulnerabilities of the past few years, since it allows for instant escalation to Domain Admin without credentials. The most straightforward way to exploit this does however involve changing the password of a Domain Controller computer account. This is a risky move and could potentially break things in the environment. In this blog we explore a new way to exploit this vulnerability, which though it has a few more prerequisites, is safer to use for security professionals assessing network security. We'll also dive a bit more into the authentication protocols in Active Directory and how they can be tied in with the Zerologon vulnerability. While this is a different way of exploiting the vulnerability, it does not bypass the mitigations released, so if you have already installed the August 2020 patches, you are also protected from this attack.
+
+# Zerologon
+Let's start with the vulnerability. In case you haven't read the details yet, you can read about it on the [Secura blog](https://www.secura.com/blog/zero-logon), on which Tom Tervoort, the researcher who discovered the vulnerability, describes the technical details. The vulnerability exists of a cryptographic flaw, where for 1 in every 256 randomly generated keys, the encryption of a plain text consisting of all null bytes will result in a ciphertext of also all null bytes. This vulnerable cryptographic protocol implementation is used as authentication mechanism in the Netlogon protocol. The netlogon protocol is used in Active Directory mostly by workstations and servers to communicate with Domain Controllers over a secure channel. This works because every workstation or server that is joined to Active Directory has a computer account for which it knows the password. Active Directory possesses several keys that are derived from this same password, which can be used in authentication protocols such as Kerberos and NTLM.
+
+The original Zerologon attack works by resetting the password of the Active Directory account of a Domain Controller in the domain to an empty string. This allows an attacker to authenticate as that Domain Controller to another Domain Controller, or even the same Domain Controller. Being able to authenticate as a Domain Controller is a high privilege, because Domain Controllers can use the DRSUAPI protocol to synchronize Active Directory data, including NT hashes and Kerberos keys. These keys in turn can be used to impersonate any user in the domain, or to create fake Kerberos tickets. The exploitation of this is however not without risks. The moment the Domain Controller machine account password is reset in Active Directory, the DC is in an inconsistent state. The encrypted machine account password, that is stored in the registry and in the memory of `lsass.exe`, is not changed. The password of the same account in Active Directory however is changed, which has consequences for authentication both from and to this Domain Controller. If the Domain Controller is rebooted, various services will not start any more because they want to read information from Active Directory. I wrote a thread last week about how any why things break if you reset this machine account, which you can [read here](https://twitter.com/_dirkjan/status/1306280553281449985). If you perform the exploitation fast enough you can recover the original password from the registry and restore that using [a restore script](https://github.com/dirkjanm/CVE-2020-1472) that I added to the GitHub repository containing an example exploit. This still leaves a risk of things breaking in the meanwhile, which is why I wouldn't really recommend exploiting this in a production environment.
+
+# Finding an alternative way to exploit Zerologon
+Since the original attack carries quite some risk, I wanted to figure out a way to exploit Zerologon without having to reset a computer account. For this we have to take a look both at authentication protocols and at some previous flaws in Netlogon. In Active Directory, there are two primary authentication protocols: NTLM and Kerberos. Kerberos is partially decentralized and works based on cryptography and shared secrets. NTLM however is fully centralized and requires communication with the Domain Controller to work if Domain accounts are used. This is because NTLM uses a challenge-response authentication mechanism, in which a cryptographic operation is performed on a challenge sent by the server to prove that the user possesses their password (or a hashed version of their password to be exact). For Active Directory accounts, the server does not actually know what the password is of the user trying to authenticate, so it forwards this to the Domain Controller, which tells the server whether the response is correct for the given challenge. This forwarding is actually done over the Netlogon protocol, in which the Zerologon vulnerability exists.
+
+One of the weaknesses of the NTLM protocol is that if an attacker can convince a user to authenticate to them using NTLM, they can forward the authentication messages to a different server and impersonate the user on this server. This is known as NTLM relaying and has been around for a very long time. Several security measures have been introduced over the years to reduce the effectiveness of NTLM relaying, but every now and then some [vulnerability](https://dirkjanm.io/abusing-exchange-one-api-call-away-from-domain-admin/) tends to [pop up](https://www.preempt.com/blog/cve-2019-1040-windows-vulnerability/) which [once again](https://dirkjanm.io/exploiting-CVE-2019-1040-relay-vulnerabilities-for-rce-and-domain-admin/) allows attackers to [abuse](https://www.preempt.com/blog/active-directory-ntlm-attacks/) it and [take over systems](https://dirkjanm.io/worst-of-both-worlds-ntlm-relaying-and-kerberos-delegation/).
+
+One attack avenue of NTLM that has quite some potential and is considered as by-design, is the "Printer Bug" feature that was [discovered](https://www.harmj0y.net/blog/redteaming/not-a-security-boundary-breaking-forest-trusts/) in 2018 by Will and Lee. This is an interesting feature because it allows an attacker to trigger the authentication via NTLM of any machine that has the spoolservice enabled. This authentication can also be forced to take place using NTLM by making the machine account authenticate to the attackers IP address instead of the hostname, which makes it use NTLM instead of Kerberos. Relaying this authentication to a useful destination is however not possible by default because the authentication happens over the SMB protocol, which requires the use of cryptographic signatures whenever we use it to talk to Domain Controllers. I've discussed [the details](https://dirkjanm.io/exploiting-CVE-2019-1040-relay-vulnerabilities-for-rce-and-domain-admin/) of this extensively in a previous blog.
+
+To understand the new attack avenue that is described in this blog, we need to take a look of how signing and encryption of data works when authentication is performed using the NTLM protocol. The encryption key to sign and encrypt messages is called the session key, and it is [based on](https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-nlmp/5e550938-91d4-459f-b67d-75d70009e3f3) the NT hash of a user and some of the properties negotiated in the protocol. That means that in order to calculate the session key, the server needs to posses the NT hash of the user. Unless the server is a Domain Controller, it doesn't posses that NT hash. Thus it sends the authentication message to the Domain Controller using the Netlogon RPC protocol, which returns this session key to the server. This is shown in the diagram below:
+
+![Netlogon flow](/assets/img/zerologon/netlogon.svg){: .align-center}
+
+Now the interesting thing here is that Zerologon gives us an authentication bypass for the netlogon protocol. When combining this with relaying, I immediately thought about [CVE-2015-0005](https://www.coresecurity.com/core-labs/advisories/windows-pass-through-authentication-methods-improper-validation) which was found by Alberto Solino a few years back. This CVE allowed any machine account to request the session key, thereby making it possible to relay authentication to endpoints which require signing and/or encryption. If we could achieve the same using Zerologon, any protocol accepting NTLM authentication and allowing for privileged access would be a potential target.
+
+# Relaying to DRSUAPI for instant DCSync
+What would be an interesting protocol to target? Using the printer bug we can get any machine account to authenticate to our attacker controlled SMB server. Machine accounts do not have high privileges often, though it can happen that they are granted Administrator rights. The highest privileged accounts are Domain Controllers, which can use the DRSUAPI to synchronize the Active Directory database. This is also abused in the initial Zerologon POC, where the machine account password is reset and rights to DCSync are obtained. What would be more interesting though from a technical perspective is if we could avoid changing the password and use the relayed connection to directly authenticate to the RPC endpoint of the DRSUAPI protocol. While this protocol requires signing and encryption, maybe we could obtain the session key using Zerologon, and comply with all the cryptographic requirements to talk to this protocol.
+
+## Diving into Netlogon and NTLM
+The code Alberto used to exploit the CVE-2015-0005 vulnerability is still present in impacket, so I decided to start with [that](https://github.com/SecureAuthCorp/impacket/blob/master/examples/smbrelayx.py#L242) and see if I could get SMB relaying working to a Domain Controller, which requires signing. Instead of using a machine account to authenticate, we use the code from the Zerologon POC to bypass authentication entirely and pretend to be the same machine we are relaying to. This requires some editing in the code to make sure it uses RPC over TCP instead of over a named pipe, but combining it with code from the CVE-2020-1472 POC this is relatively straighforward. Trying it out with a manual connection that I'm setting up from a Windows box, we see it relays successfully to the DC where signing is required.
+
+![smb relay with signing and auth bypass](/assets/img/zerologon/smbrelay_signing.png){: .align-center}
+
+The netlogon operation in play here is the `NetrLogonSamLogonWithFlags` function. When discussing this attack with Benjamin Delpy, we were initially quite surprised that this works. According to the [documentation](https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-nrpc/20cf9342-c1fa-49ad-a9a9-6d5f52e444fd), when this function is called, the NTLM session key should be encrypted with the netlogon session key, which we don't possess as we are bypassing the authentication. Some further digging brings us [to this page](https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-nrpc/3c4678e3-a528-48fe-a9ed-15b2319f7698), which explains it. Since the `ValidationLevel` that we specified is `NetlogonValidationSamInfo4`, the [value](https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-nrpc/95154ae4-d305-43e5-82e4-d5353e0f117c) of this parameter is 6, which according to the table means that nothing is encrypted! I don't know exactly what the logic behind this is, but as a result of this it is possible to call the `NetrLogonSamLogonWithFlags` function as any account with Zerologon, and get the plain text sessionkey for the NTLM authentication from it. 
+
+## Relaying to DRSUAPI
+In theory we should be able to use the same logic as in the SMB relay to relay to DRSUAPI, except of course that relaying RPC is a whole different protocol. Lucky for us, an RPC relay client was recently added to ntlmrelayx by [Arseniy Sharoglazov](https://github.com/SecureAuthCorp/impacket/pull/857). We can use that code as a base to develop the DCSync client. Since using the DRSUAPI protocol requires signing and encryption, we have to make sure that when the connection is initialized we negotiate `RPC_C_AUTHN_LEVEL_PKT_PRIVACY` instead. After we relay all 3 NTLM messages, we should be able to get the signing key over Netlogon and we should be able to send any operation over the connection.
+
+Of course things are never as easy as they would seem. After I finished writing the code that would allow for this, mostly by copying existing code for interacting with DRSUAPI from impackets secretsdump, I expected things to work, but was greeted by error messages instead:
+
+![Security package error](/assets/img/zerologon/nosealing_error.png){: .align-center}
+
+I spent some time comparing the packets that were sent by secretsdump and that were sent when relaying, and found an important difference. In the NTLM negotiate messages, secretsdump would put both the flags for encryption (sealing) as for signing, since DRSUAPI requires both. The SMB protocol however only puts in the signing flag by default and leaves the sealing flag empty. When we relay this to DRSUAPI, the server thinks we don't want to encrypt messages, and throws an error since this is not allowed by this RPC interface.
+
+![Missing sealing flag](/assets/img/zerologon/nosealing.png){: .align-center}
+
+I played around a bit with SMB settings to see if I could somehow convince the client to enable the sealing flag. But whatever I configured, even when I enforced SMB encryption and Windows would encrypt all the messages on the SMB protocol level, the sealing flag would still not be set in NTLM. This is a bit of a weird situation to be in because in this case we actually want to use more security than the client negotiated, which is not accepted by the server. Note: *In this blog the server we are authenticating to is also a Domain Controller, but since the principle applies generally I will use the word "server" to describe the target we eventually want to authenticate to, to avoid confusion in terminology.* 
+
+I wondered if it would be possible to change the NTLM messages to actually change the signing flags ourselves. Doing this would break the Message Integrity Code (MIC) which is part of the NTLM type 3 message and is based on a cryptographic calculation of all 3 messages. I knew from some previous research that the MIC is not verified by the Domain Controller, but by the local server that we're authenticating to. This also makes sense when looking at the [documentation](https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-nrpc/e17b03b8-c1d2-43a1-98db-cf8d05b9c6a8) for the information that is sent to the DC for validation, which only contains the server challenge and the response from the client. The MIC is not even sent to the DC for validation, which implies that it is only validated by the server locally. This means that for validation of the message with the DC, the MIC doesn't matter, so we can happily change the negotiated flags in the message. For the server we authenticate **to** however, the MIC does matter and it will be verified. But **how** does the server verify the MIC if it doesn't know the users password? If we look up the [NTLM documentation](https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-nlmp/c0250a97-2940-40c7-82fb-20d208c71e96) for the calculation of the MIC, we find out that it's a HMAC of the 3 NTLM messages using the **session key** as secret. You know, that session key that we just got by sending the authenticate message to the DC...
+
+Combining this knowledge, we can make sure that both signing and sealing is negotiated in the NTLM exchange by following these steps:
+
+* In the initial relay phase, make sure both the signing and sealing flags are set.
+* After the NTLM type 3 message is received (the Authenticate message), we forward it to the DC over Netlogon and abuse Zerologon to authenticate.
+* The DC gives us the session key, with which we recalculate the MIC.
+* Now we forward the modified type 3 message with recalculated MIC to the target computer.
+* We are authenticated with signing and sealing negotiated.
+
+### Working around logon limitations
+After performing our magic trick with the Negotiate flags, we are able to send messages to the RPC endpoint and sign+encrypt them with the session key that we got from the DC. Now we can DCSync! If the account we relay is a Domain Admin, this works without any issue:
+
+![DA relay to DCSync](/assets/img/zerologon/dcsync_da.png){: .align-center}
+
+However when I used the printer bug trick to authenticate, it would refuse the `NetrLogonSamLogonWithFlags` operation, stating that machine accounts are not allowed to authenticate. I wondered if this was some sort of mitigation because I was targeting a DC and attempting to log in with a machine account. When I tried the same with a non-DC, it did give the same error message though, suggesting there was something else going on. This left me confused because when I use a machine account to authenticate over the network to a Windows host, it does not throw this error. Windows also uses the `NetrLogonSamLogonWithFlags` operation over Netlogon, and it doesn't break there, so there must be some difference. Since Windows is encrypting all the operations, we also can't see what it is sending over the line. And thus we resort to some reverse engineering and debugging, to see if we can find the values going over the line. The good news is that someone managed to [track down](https://github.com/x64dbg/x64dbg/issues/2411) why x64dbg froze while debugging LSASS, and that this is now fixed, so I don't have to pull out my hairs trying to understand Windbg. In `netlogon.dll`, there is a function `NetrLogonSamLogonWithFlags`, which takes quite a few arguments. We place a breakpoint on the function and try to see if we find a reference to the `NETWORK_TRANSITIVE_INFO` that we also see in Wireshark:
+
+![Struct view in wireshark](/assets/img/zerologon/netlogonstuff.png){: .align-center}
+
+After following a few pointers I found the 6th parameter pointing to a pointer to a structure that looked quite similar, including the value `0x16` for the length of the domain. The pointer after this `0x16` did indeed point to the string "TESTSEGMENT", and both the flags and logonID are 0. When looking at the same structure for an authentication forwarded by a real Windows host, we see that Windows does not use 0 for the flags, but uses `0xE02A0000`. It also does not leave the logon ID empty:
+
+![Struct view in memory](/assets/img/zerologon/lsass_struct.png){: .align-center}
+
+If we use the same flags in our relay script, the machine account is allowed to authenticate and we can DCSync with success. *I actually spent way too much time on this because I used the variable `flags` in the relay script which was apparently already in use for something else important, causing the packet encryption to break. This took me quite some more back and forth to the working version than I would have liked.*
+
+### DCSyncing using a single socket
+The code to sync all the users on the DC is part of secretsdump. Since I don't like duplicate code I tried to import the `NTDSHashes` class and pass it the authenticated RPC connection. This class does however also rely on an SMB connection to do some lookups and to enumerate all the users in the domain. While relaying another session to SMB and combining this would be a possibility, it would significantly increase the complexity of the code. So instead I wrote some code which bypasses the requirement for an SMB connection and uses a single TCP connection to do the dumping. Because this way we can't enumerate all the users, by default the tool will only dump the `krbtgt`, `DC$` and `Administrator` accounts. With these accounts you should have enough creds to perform a full DCSync with secretsdump.
+
+Alternatively it is possible to provide low-priv credentials (that are required for the printer bug exploitation anyway) and those will be used to connect over SMB and collect the required information.
+
+# The full attack
+All this combined we have a full new attack that does not rely on resetting the passwords of machine accounts to exploit. It does have some prerequisites that the original attack does not, though these are present by default and will likely work in most ADs:
+
+* An account is needed to trigger the printer bug (you can also use a [POC in .NET](https://github.com/leechristensen/SpoolSample) that uses SSO if you have access to a Domain Joined box)
+* The Print Spooler service should be running on the DC
+* The DC should be vulnerable to Zerologon
+* The DC should be able to connect to the attacker workstation and not be blocked by firewalls
+* You should be able to run Python and bind to port 445 for an incoming SMB connection (this is tricky on Windows)
+* There should be at least 2 DCs in the domain, since relaying back to the same DC does not work
+
+On a high level, the attack looks like this:
+
+![Diagram of the relay attack](/assets/img/zerologon/zerologon_sploit.svg){: .align-center}
+
+To exploit it given that the prerequisites are met, you can set up ntlmrelayx in DCSYNC relay mode and target `DC1`, while triggering the printer bug on `DC2`:
+
+![Relay commands setup](/assets/img/zerologon/relaying.png){: .align-center}
+
+And you should see the connection and credentials rolling in:
+
+![DCSync attack](/assets/img/zerologon/relayresult.png){: .align-center}
+
+When performing the attack with a low-privilege account for SMB authentication, all hashes are dumped:
+
+![Full DCSync with SMB auth for enumeration](/assets/img/zerologon/relayresult_smb.png){: .align-center}
+
+## Notes for defenders
+The original exploit leaves very few traces in the event logs besides a password reset and potentially the DCSync from a non-DC IP. The Spool Service being abused to trigger authentication to the attacker machine can leave traces, example event logs are provided in [this repo](https://github.com/sbousseaden/EVTX-ATTACK-SAMPLES/tree/master/Lateral%20Movement). Network IOCs are similar to the original Zerologon since this attack also uses the same brute forcing technique. If you don't have a lab available, I've made 2 PCAPs of the exploitation available, one [without additional SMB user](/assets/raw/zerologon_relay_nosmb.pcapng) and [one with additional user](/assets/raw/zerologon_relay_withsmb.pcapng). Of course the best remediation is to patch the DC as soon as possible, as bad actors likely won't care about the risks involved with the original exploit.
+
+## Code and acknowledgements
+The code for this is available [on my GitHub](https://github.com/dirkjanm/CVE-2020-1472/relaying/) and will be submitted as a PR to impacket as well. You can download impacket from git and drop the files in the `/impacket/impacket/examples/ntlmrelayx/` directory, in the `clients/` and `attacks/` directory for the [2 files](https://github.com/dirkjanm/CVE-2020-1472/relaying/). If you're looking for the `printerbug.py` file, it's part of my [krbrelayx](https://github.com/dirkjanm/krbrelayx) repository.
+
+This blog is the result of the work of many others who researched NTLM for years and contributed their code to impacket. Thanks goes to:
+
+* Tom Tervoort for finding the Zerologon Bug
+* Alberto Solino for all the work on impacket and the original Netlogon signing key idea
+* Yaron Zinar and Marina Simakov for their work on Drop-the-MIC and many other NTLM attacks
+* Lee Christensen and Will Schroeder for the printer bug/feature
+* Arseniy Sharoglazov for the RPC relay client in ntlmrelayx
+
+As a final note, relaying to DCSync is not the only attack possible here. Since we can edit NTLM flags at will, we could also relay the DC account to LDAP and abuse resource based constrained delegation to allow ourselves to authenticate as any user. If LDAP signing is required, we could also do that using the session key, though ntlmrelayx does not use an ldap library that has signing support.
