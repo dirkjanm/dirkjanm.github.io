@@ -6,6 +6,10 @@ permalink: /talks/
 ---
 
 # Presentations
+### **Wild West Hacking Fest - Cloud Roundup Dec 2020**: Fantastic Conditional Access Policies and how to bypass them
+**Topic**: Azure AD, Office 365, Conditional Access  
+**Links**: [Abstract](https://wildwesthackinfest.com/the-roundup/cloud-pentesting/) | [Slides (PDF)](/assets/raw/fantastic_policies_cloud_roundup.pdf) | [Video Recording](https://www.youtube.com/watch?v=yOJ6yB9anZM&t=296s)
+
 ### **BlueHat Seattle 2019**: I'm in your cloud: A year of hacking Azure AD 
 **Topic**: Azure AD, Office 365  
 **Links**: [Abstract](https://www.microsoft.com/bluehat) | [Slides (PDF)](/assets/raw/Im%20in%20your%20cloud%20bluehat-v1.0.pdf) | [Demo video](/assets/raw/replyurlwifi.mp4) | [Video Recording](https://www.youtube.com/watch?v=fpUZJxFK72k)
