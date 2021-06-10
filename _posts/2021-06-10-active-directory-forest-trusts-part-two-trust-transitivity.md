@@ -270,7 +270,7 @@ We can go back to the forest trust information and see that it's updated:
 
 ![Updated forest trust info](/assets/img/foresttrusts/ftinfo-updated.png){: .align-center}
 
-Note that this also shows the new SID properly, indicating that our SID is now actually trusted.
+Note that this also shows the new SID properly, indicating that our SID is now actually trusted (this `S-1-5-21-2937342636-164546242-3042484607` SID is the same SID we queried previously from the server).
 
 The last step is performing the forest trust bypass attack. We forge an inter-realm trust ticket, using once again the incoming trust key for the inter-realm ticket:
 
