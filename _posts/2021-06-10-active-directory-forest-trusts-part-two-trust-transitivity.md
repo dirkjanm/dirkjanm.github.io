@@ -229,9 +229,9 @@ ForestTrustData:
  ...snip...
 ```
 
-Now we start the [Frida script]() as SYSTEM on the DC and run the call again:
+Now we start the [Frida script](https://github.com/dirkjanm/forest-trust-tools/blob/master/frida_intercept.py) as SYSTEM on the DC and run the call again:
 
-![Intercepting with Frida](https://github.com/dirkjanm/forest-trust-tools/blob/master/frida_intercept.py){: .align-center}
+![Intercepting with Frida](/assets/img/foresttrusts/fridaintercepted.png){: .align-center}
 
 ```
 python gettrustinfo.py forest-a/forest-b.krbtgt.cloud@forest-a-dc -hashes :8ef7d1bc6e961fd4ed085d6fd1e6ce10 -target-ip 51.144.50.171
