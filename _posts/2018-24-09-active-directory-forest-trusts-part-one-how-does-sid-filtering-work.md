@@ -290,7 +290,7 @@ If SID history is enabled for a cross-forest trust, the security is significantl
 If you are an IT admin, carefully consider which users in different forests you grant access in your forest, because every user granted access weakens the security boundary between the forests. I wouldn't recommend allowing SID history between forests unless absolutely necessary.
 
 ## What's next
-In the following part (or parts, who knows) we will dive into how trust Transitivity works and discuss other types of trusts with domains outside the forest. This means we'll also start playing with Forest C and `sub.forest-a`.
+In the following part (or parts, who knows) we will dive into how trust Transitivity works and discuss other types of trusts with domains outside the forest. This means we'll also start playing with Forest C and `sub.forest-a`. **Update:** Part 2 is now [available here](https://dirkjanm.io/active-directory-forest-trusts-part-two-trust-transitivity/).
 
 
 ## The tools
