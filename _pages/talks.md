@@ -10,6 +10,10 @@ permalink: /talks/
 **Topic**: Azure AD, Office 365, Conditional Access  
 **Links**: [Abstract](https://wildwesthackinfest.com/the-roundup/cloud-pentesting/) | [Slides (PDF)](/assets/raw/fantastic_policies_cloud_roundup.pdf) | [Video Recording](https://www.youtube.com/watch?v=yOJ6yB9anZM&t=296s)
 
+### **Black Hat Asia 2020**: Walking your dog in multiple forests - breaking AD trust boundaries through Kerberos vulnerabilities
+**Topic**: Active Directory, Kerberos  
+**Links**: [Abstract](https://www.blackhat.com/asia-20/briefings/schedule/index.html#walking-your-dog-in-multiple-forests---breaking-ad-trust-boundaries-through-kerberos-vulnerabilities-18818) | [Slides (PDF)](/assets/raw/Walking-your-dog-in-multiple-forests.pdf) | [Conference recording (bad audio)](https://www.youtube.com/watch?v=z3FOw8MfKcw) | [Video recording with better audio](https://youtu.be/EUa7tyOOph4)
+
 ### **BlueHat Seattle 2019**: I'm in your cloud: A year of hacking Azure AD 
 **Topic**: Azure AD, Office 365  
 **Links**: [Abstract](https://www.microsoft.com/bluehat) | [Slides (PDF)](/assets/raw/Im%20in%20your%20cloud%20bluehat-v1.0.pdf) | [Demo video](/assets/raw/replyurlwifi.mp4) | [Video Recording](https://www.youtube.com/watch?v=fpUZJxFK72k)

@@ -33,7 +33,7 @@ author:
   name             : "Dirk-jan Mollema"
   avatar           : /assets/img/thisisapicture.png
   bio              : "Hacker, red teamer, researcher. Likes to write infosec-focussed Python tools.
-  This is my personal blog mostly containing research on topics I find interesting, such as Windows, Active Directory and cloud stuff."
+  This is my personal blog containing research on topics I find interesting, such as (Azure) Active Directory internals, protocols and vulnerabilities."
   location         : "Both sides of a security boundary"
   uri              :
   home             : # null (default), "absolute or relative url to link to author home"
@@ -59,7 +59,7 @@ author:
   vine             :
   weibo            :
   xing             :
-  youtube          : # "https://youtube.com/c/MichaelRoseDesign"
+  youtube          : https://www.youtube.com/c/dirkjanm
 
 
 # Reading Files
