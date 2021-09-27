@@ -6,6 +6,10 @@ permalink: /talks/
 ---
 
 # Presentations
+### **Romhack 2021**: Breaking Azure AD joined endpoints in Zero Trust environments
+**Topic**: Azure AD, Office 365, Conditional Access  
+**Links**: [Abstract](https://www.romhack.io/agenda-2021.html#mollema) | [Slides (PDF)](/assets/raw/romhack_dirkjan.pdf) | [Video Recording](https://www.youtube.com/watch?v=OigKnI68Sfo)
+
 ### **Wild West Hacking Fest - Cloud Roundup Dec 2020**: Fantastic Conditional Access Policies and how to bypass them
 **Topic**: Azure AD, Office 365, Conditional Access  
 **Links**: [Abstract](https://wildwesthackinfest.com/the-roundup/cloud-pentesting/) | [Slides (PDF)](/assets/raw/fantastic_policies_cloud_roundup.pdf) | [Video Recording](https://www.youtube.com/watch?v=yOJ6yB9anZM&t=296s)
