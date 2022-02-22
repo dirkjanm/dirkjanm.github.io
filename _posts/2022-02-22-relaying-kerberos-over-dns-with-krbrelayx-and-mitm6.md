@@ -77,7 +77,7 @@ We wait for our victim to get an IPv6 address and connect to our rogue server:
 
 The screenshot shows the victim tried to update their DNS record, which we refused to do because of the lack of authentication. The authentication is sent via TCP to the DNS server of krbrelayx, which accepts this and forwards it to AD CS:
 
-![krbrelayx forwarding the authentication to AD CS and obtaining a certificate](/assets/img/kerberos/dns_relay.png){: .align-center}
+![krbrelayx forwarding the authentication to AD CS and obtaining a certificate](/assets/img/kerberos/adcs_relayed_dns.png){: .align-center}
 
 On the wire, we see the expected flow:
 
