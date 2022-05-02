@@ -120,13 +120,13 @@ This concerns the following Exchange versions:
 
 Furthermore, they reviewed the required permissions for Exchange and decided to **reduce** them, so that Exchange no longer has excessively high privileges in AD. For existing Exchange installations, it is required to run `Setup.exe /PrepareAD` again from an updated installer, otherwise the privileges will not be removed. For Exchange 2010 the removal of privileges has to be performed manually, instructions are available in [KB4490059](https://support.microsoft.com/en-us/help/4490059/using-shared-permissions-model-to-run-exchange-server).
 
-More information is available on the [Microsoft Exchange blog](https://blogs.technet.microsoft.com/exchange/2019/02/12/released-february-2019-quarterly-exchange-updates/) about this patch.
+More information is available on the [Microsoft Exchange blog](https://techcommunity.microsoft.com/t5/exchange-team-blog/released-february-2019-quarterly-exchange-updates/ba-p/609061) about this patch.
 
 # Resources / References
 The following blogs, white papers and research offer more information about these attacks:
 
 ## Mitigation resources
-- ~~<https://github.com/gdedrouas/Exchange-AD-Privesc/blob/master/DomainObject/Fix-DomainObjectDACL.ps1> (Removing dangerous Exchange permissions with PowerShell)~~ Update: Use [Microsoft's recommended fix](https://blogs.technet.microsoft.com/exchange/2019/02/12/released-february-2019-quarterly-exchange-updates/) for this.
+- ~~<https://github.com/gdedrouas/Exchange-AD-Privesc/blob/master/DomainObject/Fix-DomainObjectDACL.ps1> (Removing dangerous Exchange permissions with PowerShell)~~ Update: Use [Microsoft's recommended fix](https://techcommunity.microsoft.com/t5/exchange-team-blog/released-february-2019-quarterly-exchange-updates/ba-p/609061) for this.
 - <https://www.blackhat.com/docs/webcast/04262018-Webcast-Toxic-Waste-Removal-by-Andy-Robbins.pdf> (Identifying and removing dangerous Exchange permissions, by @\_wald0)
 - [ACL privilege escalation research](https://www.blackhat.com/docs/us-17/wednesday/us-17-Robbins-An-ACE-Up-The-Sleeve-Designing-Active-Directory-DACL-Backdoors-wp.pdf) by @\_wald0 and @harmj0y
 
