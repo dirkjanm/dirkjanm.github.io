@@ -1,7 +1,7 @@
 ---
 layout: single
 classes: wide
-title:  "Abusing forgotten permissions on pre-created computer objects in AD"
+title:  "Abusing forgotten permissions on computer objects in Active Directory"
 date:   2022-07-11 18:08:57 +0200
 ---
 A while back, I read an interesting blog by [Oddvar Moe](https://twitter.com/Oddvarmoe) about [Pre-created computer accounts](https://www.trustedsec.com/blog/diving-into-pre-created-computer-accounts/) in Active Directory. In the blog, Oddvar also describes the option to configure who can join the computer to the domain after the object is created. This sets an interesting ACL on computer accounts, allowing the principal who gets those rights to reset the computer account password via the "All extended rights" option. That sounded quite interesting, so I did some more digging into this and found there are more ACLs set when you use this option, which not only allows this principal to reset the password but also to configure Resource-Based Constrained Delegation. BloodHound was missing this ACL, and I dug into why, which I’ve written up in this short blog. If an environment is sufficiently large (and/or old), someone at some point likely added a few systems to the domain with this option set to "Everyone" or "Authenticated Users", allowing all users in the domain to join the computer to the domain. Whoever configured this probably did not realize this would also give everyone specific permissions on the object after it is joined to the domain. The logic to analyze this is now included in the [BloodHound.py](https://github.com/fox-it/BloodHound.py) data gatherer, as well as a [Pull Request](https://github.com/BloodHoundAD/SharpHoundCommon/pull/34) for SharpHound. If this misconfiguration is present in a domain, it may give you access to servers from any user. This makes for an easy first step in lateral movement. Along the way, I discovered more cases in which these ACEs were present, so in any larger environment, there's a good chance that unintended users have some lingering permissions on computer objects. This post includes some queries to use in BloodHound, as well as some recommended mitigations.
@@ -50,7 +50,7 @@ We can use this information to reconstruct all the property sets and the propert
 
 With this, we can conclude that it's ACE number 7 that gives us the rights to modify the `msDS-AllowedToActOnBehalfOfOtherIdentity` attribute, which allows us to configure Resource-Based Constrained Delegation. 
 
-# Abusing the "Everyone" case
+# Abusing the "Everyone" case and more abuse options
 To go back to our original idea, when an admin adds a computer to the domain and gives "everyone" or "authenticated users" the permission to join the computer to the domain, these groups also get the permission to configure RBCD. If we add this extra logic to the BloodHound data collector and run it again, we will see these new "AddAllowedToAct" edges showing up in our data. There is a second case in which these permissions get set, which is when a computer object is created via LDAP, in which case the user that created the account will get the permissions that allow them to configure RBCD. This may be another lateral movement opportunity in case an attacker compromises an account that is commonly used to join machines to the domain.
 
 After adding the new ACL property logic to BloodHound.py, and diffing the output with SharpHound, we see the extra `AddAllowedToAct` edges showing up:
