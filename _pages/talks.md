@@ -7,8 +7,8 @@ permalink: /talks/
 
 # Presentations
 ### **Black Hat USA 2022**: Backdooring and Hijacking Azure AD Accounts by Abusing External Identities
-**Topic**: Azure AD, Office 365, External Identities, B2B 
-**Links**: [Abstract]([https://www.romhack.io/agenda-2021.html#mollema](https://www.blackhat.com/us-22/briefings/schedule/index.html#backdooring-and-hijacking-azure-ad-accounts-by-abusing-external-identities-26999)) | [Slides (PDF)](/assets/raw/US-22-Mollema-Backdooring-and-hijacking-Azure-AD-accounts_final.pdf) | [Demo video](/assets/raw/mfaoverwrite_short.mp4)
+**Topic**: Azure AD, Office 365, External Identities, B2B  
+**Links**: [Abstract](https://www.blackhat.com/us-22/briefings/schedule/index.html#backdooring-and-hijacking-azure-ad-accounts-by-abusing-external-identities-26999) | [Slides (PDF)](/assets/raw/US-22-Mollema-Backdooring-and-hijacking-Azure-AD-accounts_final.pdf) | [Demo video](/assets/raw/mfaoverwrite_short.mp4)
 
 ### **Romhack 2021**: Breaking Azure AD joined endpoints in Zero Trust environments
 **Topic**: Azure AD, Office 365, Conditional Access  
