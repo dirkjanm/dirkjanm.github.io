@@ -57,16 +57,16 @@ After adding the new ACL property logic to BloodHound.py, and diffing the output
 
 ![More ACL info](/assets/img/computeracl/datadiff.png){: .align-center}
 
-Loading this data into BloodHound, we can use the following query to find our nice new edges:
+Loading this data into BloodHound, we can use the following query to find our nice new edges. **note:** the edge was renamed to `WriteAccountRestrictions` after merging into the main BloodHound code. Both SharpHound and BloodHound.py now report this as `WriteAccountRestrictions`, so the query changes from the naming used above:
 
 ```
-MATCH p=(g)-[:AddAllowedToAct]->(c:Computer) WHERE NOT g.highvalue RETURN p
+MATCH p=(g)-[:WriteAccountRestrictions]->(c:Computer) WHERE NOT g.highvalue RETURN p
 ```
 
 Or to focus on cases exploitable from any authenticated user, the following query is useful:
 
 ```
-MATCH p=(g)-[:AddAllowedToAct]->(c:Computer) WHERE g.objectid ENDS WITH "S-1-1-0" OR g.objectid ENDS WITH "-513" OR g.objectid ENDS WITH "S-1-5-11" OR g.objectid ENDS WITH "-515" RETURN p
+MATCH p=(g)-[:WriteAccountRestrictions]->(c:Computer) WHERE g.objectid ENDS WITH "S-1-1-0" OR g.objectid ENDS WITH "-513" OR g.objectid ENDS WITH "S-1-5-11" OR g.objectid ENDS WITH "-515" RETURN p
 ```
 
 This shows the following result in my test lab, since I added a computer with the "everyone" permissions to the domain:
@@ -110,4 +110,4 @@ This feature is now present in version 1.3.0 of BloodHound.py which is available
 Something that is not quite new but was not publicly announced before is BloodHound.py's capabilities to gather information about credentials stored on hosts in scheduled tasks or as part of services. While this method requires administrator privileges to collect, it does gather credentials that could be recoverable from hosts that aren't always gathered using other session collection methods. You can activate these collection methods by adding `experimental` to your list of collection methods.
 
 # Tools
-For now, the new ACL parsing logic is only part of BloodHound.py. Alternatively, you could run SharpHound with the logic from my fork until the [pull request](https://github.com/BloodHoundAD/SharpHoundCommon/pull/34) is merged or the functionality makes its way to SharpHound. I think this kind of attack pattern may be common in the wild, but I don't have any solid data on it, so if you find some instances of it when this is configured in real environments (either from the red side or the blue side), please let me know!
+The new ACL edge has been added to both BloodHound.py and the official BloodHound and it's SharpHound data collector. The edge was renamed to `WriteAccountRestrictions` for clarity. If you have the latest version of BloodHound it should support this out-of-the-box without additional requirements. I think this kind of attack pattern may be common in the wild, but I don't have any solid data on it, so if you find some instances of it when this is configured in real environments (either from the red side or the blue side), please let me know!
