@@ -10,6 +10,10 @@ permalink: /talks/
 **Topic**: Azure AD, Office 365, External Identities, B2B  
 **Links**: [Abstract](https://www.blackhat.com/us-22/briefings/schedule/index.html#backdooring-and-hijacking-azure-ad-accounts-by-abusing-external-identities-26999) | [Slides (PDF)](/assets/raw/US-22-Mollema-Backdooring-and-hijacking-Azure-AD-accounts_final.pdf) | [Demo video](/assets/raw/mfaoverwrite_short.mp4)
 
+### **TROOPERS 22**: Breaking Azure AD joined endpoints in Zero Trust environments
+**Topic**: Azure AD, Office 365, Conditional Access, Azure AD devices  
+**Links**: [Abstract](https://troopers.de/troopers22/agenda/tr22-1055-breaking-azure-ad-joined-endpoints-in-zero-trust-environments/) | [Slides (PDF)](/assets/raw/TR22_Mollema_Breaking_Azure_AD_joined_endpoints_in_zero-trust_environments_v1.0.pdf) 
+
 ### **Romhack 2021**: Breaking Azure AD joined endpoints in Zero Trust environments
 **Topic**: Azure AD, Office 365, Conditional Access  
 **Links**: [Abstract](https://www.romhack.io/agenda-2021.html#mollema) | [Slides (PDF)](/assets/raw/romhack_dirkjan.pdf) | [Video Recording](https://www.youtube.com/watch?v=OigKnI68Sfo)
