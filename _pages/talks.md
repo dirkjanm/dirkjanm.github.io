@@ -12,7 +12,7 @@ permalink: /talks/
 
 ### **TROOPERS 22**: Breaking Azure AD joined endpoints in Zero Trust environments
 **Topic**: Azure AD, Office 365, Conditional Access, Azure AD devices  
-**Links**: [Abstract](https://troopers.de/troopers22/agenda/tr22-1055-breaking-azure-ad-joined-endpoints-in-zero-trust-environments/) | [Slides (PDF)](/assets/raw/TR22_Mollema_Breaking_Azure_AD_joined_endpoints_in_zero-trust_environments_v1.0.pdf) 
+**Links**: [Abstract](https://troopers.de/troopers22/agenda/tr22-1055-breaking-azure-ad-joined-endpoints-in-zero-trust-environments/) | [Slides (PDF)](/assets/raw/TR22_Mollema_Breaking_Azure_AD_joined_endpoints_in_zero-trust_environments_v1.0.pdf) | [Video Recording](https://youtu.be/BduCn8cLV1A) 
 
 ### **Romhack 2021**: Breaking Azure AD joined endpoints in Zero Trust environments
 **Topic**: Azure AD, Office 365, Conditional Access  
