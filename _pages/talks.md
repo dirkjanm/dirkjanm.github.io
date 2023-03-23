@@ -6,6 +6,10 @@ permalink: /talks/
 ---
 
 # Presentations
+### **Insomnihack 23**: Breaking and fixing Azure AD device identity security
+**Topic**: Azure AD, Office 365, Conditional Access, Azure AD devices  
+**Links**: [Abstract](https://insomnihack.ch/talks-2023/#G9JMQL) | [Slides (PDF)](/assets/raw/Insomnihack%20Breaking%20and%20fixing%20Azure%20AD%20device%20identity%20security.pdf) 
+
 ### **Black Hat USA 2022**: Backdooring and Hijacking Azure AD Accounts by Abusing External Identities
 **Topic**: Azure AD, Office 365, External Identities, B2B  
 **Links**: [Abstract](https://www.blackhat.com/us-22/briefings/schedule/index.html#backdooring-and-hijacking-azure-ad-accounts-by-abusing-external-identities-26999) | [Slides (PDF)](/assets/raw/US-22-Mollema-Backdooring-and-hijacking-Azure-AD-accounts_final.pdf) | [Demo video](/assets/raw/mfaoverwrite_short.mp4) | [Video recording](https://www.youtube.com/watch?v=uKDS2t9_KsA)
