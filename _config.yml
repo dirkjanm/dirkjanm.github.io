@@ -34,7 +34,7 @@ author:
   avatar           : /assets/img/thisisapicture.png
   bio              : >
     Hacker, red teamer, researcher. Likes to write infosec-focussed Python tools.
-    This is my personal blog containing research on topics I find interesting, such as (Azure) Active Directory internals, protocols and vulnerabilities.<br /><br />Business info at <a href="https://outsidersecurity.nl">outsidersecurity.nl</a>
+    This is my personal blog containing research on topics I find interesting, such as (Azure) Active Directory internals, protocols and vulnerabilities.<br /><br />Looking for a security test or training? Business contact via <a href="https://outsidersecurity.nl">outsidersecurity.nl</a>
   location         : "Both sides of a security boundary"
   uri              :
   home             : # null (default), "absolute or relative url to link to author home"
