@@ -6,9 +6,13 @@ permalink: /talks/
 ---
 
 # Presentations
+### **NorthSec 2023**: (Windows) Hello from the other side
+**Topic**: Azure AD, Windows Hello, Azure AD devices  
+**Links**: [Abstract](https://nsec.io/schedule/#session-2023-windows-hello-from-the-other-side) | [Slides (PDF)](Windows%20Hello%20from%20the%20other%20side_nsec_v1.0.pdf)  
+
 ### **Insomnihack 23**: Breaking and fixing Azure AD device identity security
 **Topic**: Azure AD, Office 365, Conditional Access, Azure AD devices  
-**Links**: [Abstract](https://insomnihack.ch/talks-2023/#G9JMQL) | [Slides (PDF)](/assets/raw/Insomnihack%20Breaking%20and%20fixing%20Azure%20AD%20device%20identity%20security.pdf) 
+**Links**: [Abstract](https://insomnihack.ch/talks-2023/#G9JMQL) | [Slides (PDF)](/assets/raw/Insomnihack%20Breaking%20and%20fixing%20Azure%20AD%20device%20identity%20security.pdf) | [Video Recording](https://www.youtube.com/watch?v=x609c-MUZ_g)  
 
 ### **Black Hat USA 2022**: Backdooring and Hijacking Azure AD Accounts by Abusing External Identities
 **Topic**: Azure AD, Office 365, External Identities, B2B  
