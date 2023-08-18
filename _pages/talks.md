@@ -8,7 +8,7 @@ permalink: /talks/
 # Presentations
 ### **TROOPERS 23**: (Windows) Hello from the other side
 **Topic**: Azure AD, Windows Hello, Azure AD devices  
-**Links**: [Abstract](https://troopers.de/troopers23/talks/mn7xw8/) | [Slides (PDF)](/assets/raw/Windows%20Hello%20from%20the%20other%20side_TR23_final.pdf)  
+**Links**: [Abstract](https://troopers.de/troopers23/talks/mn7xw8/) | [Slides (PDF)](/assets/raw/Windows%20Hello%20from%20the%20other%20side_TR23_final.pdf) | [Video Recording](https://www.youtube.com/watch?v=AFay_58QubY)  
 
 ### **x33fcon 2023**: (Windows) Hello from the other side
 **Topic**: Azure AD, Windows Hello, Azure AD devices  
