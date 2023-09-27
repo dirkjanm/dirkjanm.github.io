@@ -12,7 +12,7 @@ permalink: /talks/
 
 ### **x33fcon 2023**: (Windows) Hello from the other side
 **Topic**: Azure AD, Windows Hello, Azure AD devices  
-**Links**: [Abstract](https://www.x33fcon.com/#!s/Dirk-janMollema.md) | [Slides (PDF)](/assets/raw/Windows%20Hello%20from%20the%20other%20side_x33fcon.pdf)  
+**Links**: [Abstract](https://www.x33fcon.com/#!s/Dirk-janMollema.md) | [Slides (PDF)](/assets/raw/Windows%20Hello%20from%20the%20other%20side_x33fcon.pdf) | [Video Recording](https://youtu.be/Hiaraz7_KvE)  
 
 ### **NorthSec 2023**: (Windows) Hello from the other side
 **Topic**: Azure AD, Windows Hello, Azure AD devices  

@@ -188,9 +188,9 @@ compress_html:
     envs: development
 
 analytics:
-  provider               : "google" # false (default), "google", "google-universal", "custom"
+  provider               : "google-gtag" # false (default), "google", "google-universal", "custom"
   google:
-    tracking_id          : "UA-125398868-1"
+    tracking_id          : "G-G3JYRDGZVR"
     anonymize_ip         : # true, false (default)
 
 
