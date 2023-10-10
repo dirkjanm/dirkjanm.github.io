@@ -15,7 +15,7 @@
 # in the templates via {{ site.myvariable }}.
 title: dirkjanm.io
 description: >- # this means to ignore newlines until "baseurl:"
-  Dirk-jan's personal blog, mostly containing research on topics I find interesting, such as Windows, Active Directory and cloud stuff.
+  Dirk-jan's personal blog, mostly containing research on topics I find interesting, such as (Azure) Active Directory internals, protocols and vulnerabilities.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://dirkjanm.io" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: _dirkjan
