@@ -6,6 +6,10 @@ permalink: /talks/
 ---
 
 # Presentations
+### **Area41 2024**: Phishing the Phishing Resistant - Phishing for Primary Refresh Tokens in Microsoft Entra
+**Topic**: Microsoft Entra, Windows Hello, Credential phishing  
+**Links**: [Slides (PDF)](/assets/raw/Phishing%20the%20Phishing%20Resistant.pdf) | Video Recording: coming soon  
+
 ### **TROOPERS 23**: (Windows) Hello from the other side
 **Topic**: Azure AD, Windows Hello, Azure AD devices  
 **Links**: [Abstract](https://troopers.de/troopers23/talks/mn7xw8/) | [Slides (PDF)](/assets/raw/Windows%20Hello%20from%20the%20other%20side_TR23_final.pdf) | [Video Recording](https://www.youtube.com/watch?v=AFay_58QubY)  
