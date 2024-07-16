@@ -6,9 +6,13 @@ permalink: /talks/
 ---
 
 # Presentations
+### **Troopers 24**: Attacking Primary Refresh Tokens using their MacOS implementation
+**Topic**: Microsoft Entra, Primary Refresh Tokens, macOS   
+**Links**: [Slides (PDF)](/assets/raw/Attacking%20PRT%20macOS.pdf) | [Demo video](/assets/raw/troopers24.mp4) | Video recording: coming soon   
+
 ### **Area41 2024**: Phishing the Phishing Resistant - Phishing for Primary Refresh Tokens in Microsoft Entra
 **Topic**: Microsoft Entra, Windows Hello, Credential phishing  
-**Links**: [Slides (PDF)](/assets/raw/Phishing%20the%20Phishing%20Resistant.pdf) | [Demo video](/assets/raw/area41_credphishing.mp4) | Video Recording: coming soon  
+**Links**: [Slides (PDF)](/assets/raw/Phishing%20the%20Phishing%20Resistant.pdf) | [Demo video](/assets/raw/area41_credphishing.mp4) | [Video Recording](https://www.youtube.com/watch?v=tNh_sYkmurI)  
 
 ### **TROOPERS 23**: (Windows) Hello from the other side
 **Topic**: Azure AD, Windows Hello, Azure AD devices  
