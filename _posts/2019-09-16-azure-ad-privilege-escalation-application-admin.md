@@ -138,3 +138,5 @@ I don't really see why credentials can be assigned to default service principals
 When I reported the fact that a privilege escalation is still possible this way (even after I was told it was fixed last year) I got a reply back from MSRC stating that Application Administrators assigning credentials to applications and obtaining more rights is documented and thus not a vulnerability.
 
 If you are administering an Azure AD environment I recommend implementing checks for credentials being assigned to default service principals and to regularly review who control the credentials of applications with high privileges.
+
+**Update July 2024**: In the years since this blog, Microsoft has blocked this possibility on almost all of their first-party service principals, with some exceptions. So this approach will not work any more for Microsoft first party service principals, but it is still valid for applications from within the tenant or from other third parties.

@@ -99,6 +99,8 @@ It is also possible to perform the phishing attack using credential phishing met
 
 ![Signing in with captured cookie](/assets/img/devicecode/estscookie.png){: .align-center}
 
+I talked more about this approach at AREA41 in June 2024, the slides, recording and a demo video are available on the [talks](/talks/) page.
+
 # Prevention and detection
 There are not many ways to prevent these attacks. Device code phishing is one of the few methods that is not prevented by requiring a certain MFA strength, since users perform this authentication against the legit Microsoft domains. In addition, there is unfortunately no way to block certain OAuth flows such as the device code flow. The credential phishing approach described above is easier to prevent, since this will happen on a fake website which will prevent some MFA methods from working.
 
