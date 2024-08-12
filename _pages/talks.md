@@ -6,6 +6,10 @@ permalink: /talks/
 ---
 
 # Presentations
+### **DEF CON 32**: Abusing Windows Hello Without a Severed Hand (joint talk with Ceri Coburn)
+**Topic**: Microsoft Entra, Primary Refresh Tokens, Windows Hello, Windows internals  
+**Links**: [Slides (PDF)](/assets/raw/Abusing%20Windows%20Hello%20Without%20a%20Severed%20Hand_v3.pdf) | Video recording: coming soon   
+
 ### **Troopers 24**: Attacking Primary Refresh Tokens using their MacOS implementation
 **Topic**: Microsoft Entra, Primary Refresh Tokens, macOS   
 **Links**: [Slides (PDF)](/assets/raw/Attacking%20PRT%20macOS.pdf) | [Demo video](/assets/raw/troopers24.mp4) | Video recording: coming soon   
