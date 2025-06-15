@@ -6,13 +6,29 @@ permalink: /talks/
 ---
 
 # Presentations
+### **YellowHat 2025**: Windows Hello Abuse - The Sequel
+**Topic**: Microsoft Entra, Primary Refresh Tokens, Windows Hello  
+**Links**: [Slides (PDF)](/assets/raw/Windows%20Hello%20abuse%20the%20sequel_yellowhat.pdf)   
+
+### **IT Defense 2025**: Windows Hello Abuse - The Sequel
+**Topic**: Microsoft Entra, Primary Refresh Tokens, Windows Hello  
+**Links**: [Abstract](https://www.it-defense.de/en/it-defense-2025/conference/presentations#c2294) | [Slides (PDF)](/assets/raw/Windows%20Hello%20abuse%20the%20sequel_itdefense_slides.pdf)   
+
+### **EkoParty**: Windows Hello Abuse - The Sequel
+**Topic**: Microsoft Entra, Primary Refresh Tokens, Windows Hello  
+**Links**: [Slides (PDF)](/assets/raw/Windows%20Hello%20abuse%20the%20sequel.pdf) | [Video recording](https://www.youtube.com/watch?v=rdvqof_yGMs)   
+
+### **OrangeCon 24**: Attacking Primary Refresh Tokens using their MacOS implementation (joint talk with Olaf Hartong)
+**Topic**: Microsoft Entra, Primary Refresh Tokens, macOS   
+**Links**: [Slides (PDF)](/assets/raw/Attacking%20PRT%20macOS_orangecon.pdf)| [Video recording](https://www.youtube.com/watch?v=T92verdYJAQ)   
+
 ### **DEF CON 32**: Abusing Windows Hello Without a Severed Hand (joint talk with Ceri Coburn)
 **Topic**: Microsoft Entra, Primary Refresh Tokens, Windows Hello, Windows internals  
-**Links**: [Slides (PDF)](/assets/raw/Abusing%20Windows%20Hello%20Without%20a%20Severed%20Hand_v3.pdf) | Video recording: coming soon   
+**Links**: [Slides (PDF)](/assets/raw/Abusing%20Windows%20Hello%20Without%20a%20Severed%20Hand_v3.pdf) | [Video recording](https://www.youtube.com/watch?v=mFJ-NUnFBac)   
 
-### **Troopers 24**: Attacking Primary Refresh Tokens using their MacOS implementation
+### **Troopers 24**: Attacking Primary Refresh Tokens using their MacOS implementation (joint talk with Olaf Hartong)
 **Topic**: Microsoft Entra, Primary Refresh Tokens, macOS   
-**Links**: [Slides (PDF)](/assets/raw/Attacking%20PRT%20macOS.pdf) | [Demo video](/assets/raw/troopers24.mp4) | Video recording: coming soon   
+**Links**: [Slides (PDF)](/assets/raw/Attacking%20PRT%20macOS.pdf) | [Demo video](/assets/raw/troopers24.mp4) | [Video recording](https://www.youtube.com/watch?v=wFhe0-RRkFA)   
 
 ### **Area41 2024**: Phishing the Phishing Resistant - Phishing for Primary Refresh Tokens in Microsoft Entra
 **Topic**: Microsoft Entra, Windows Hello, Credential phishing  
@@ -24,7 +40,7 @@ permalink: /talks/
 
 ### **x33fcon 2023**: (Windows) Hello from the other side
 **Topic**: Azure AD, Windows Hello, Azure AD devices  
-**Links**: [Abstract](https://www.x33fcon.com/#!s/Dirk-janMollema.md) | [Slides (PDF)](/assets/raw/Windows%20Hello%20from%20the%20other%20side_x33fcon.pdf) | [Video Recording](https://youtu.be/Hiaraz7_KvE)  
+**Links**: [Abstract](https://www.x33fcon.com/#!archive/2023/s/Dirk-janMollema.md) | [Slides (PDF)](/assets/raw/Windows%20Hello%20from%20the%20other%20side_x33fcon.pdf) | [Video Recording](https://youtu.be/Hiaraz7_KvE)  
 
 ### **NorthSec 2023**: (Windows) Hello from the other side
 **Topic**: Azure AD, Windows Hello, Azure AD devices  
