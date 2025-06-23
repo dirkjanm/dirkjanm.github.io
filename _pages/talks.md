@@ -6,6 +6,14 @@ permalink: /talks/
 ---
 
 # Presentations
+### **OffenxiveX 2025**: Bringing your own Identity Provider to Entra ID for Persistence and MFA Bypasses
+**Topic**: Microsoft Entra, External Authentication Methods, Federated Credentials, Open ID Connect   
+**Links**: [Slides in dark mode (PDF)](/assets/raw/BYO%20IDP%20in%20Entra%20ID_offensivex.pdf)  
+
+### **x33fcon 2025**: Bringing your own Identity Provider to Entra ID for Persistence and MFA Bypasses
+**Topic**: Microsoft Entra, External Authentication Methods, Federated Credentials, Open ID Connect   
+**Links**: [Abstract](https://www.x33fcon.com/#!s/Dirk-janMollema.md) | [Slides in light mode (PDF)](/assets/raw/BYO%20IDP%20in%20Entra%20ID_x33fcon.pdf)   
+
 ### **YellowHat 2025**: Windows Hello Abuse - The Sequel
 **Topic**: Microsoft Entra, Primary Refresh Tokens, Windows Hello  
 **Links**: [Slides (PDF)](/assets/raw/Windows%20Hello%20abuse%20the%20sequel_yellowhat.pdf)   
