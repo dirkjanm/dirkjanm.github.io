@@ -6,6 +6,10 @@ permalink: /talks/
 ---
 
 # Presentations
+### **Troopers 25**: Finding Entra ID CA bypasses - the structured way (joint talk with Fabian Bader)
+**Topic**: Microsoft Entra, Conditional Access, FOCI, BroCI   
+**Links**: [Abstract](https://troopers.de/troopers25/talks/tfsfqs/) | [Slides (PDF)](/assets/raw/Finding%20Entra%20ID%20CA%20Bypasses%20-%20the%20structured%20way.pdf) 
+
 ### **OffenxiveX 2025**: Bringing your own Identity Provider to Entra ID for Persistence and MFA Bypasses
 **Topic**: Microsoft Entra, External Authentication Methods, Federated Credentials, Open ID Connect   
 **Links**: [Slides in dark mode (PDF)](/assets/raw/BYO%20IDP%20in%20Entra%20ID_offensivex.pdf)  
