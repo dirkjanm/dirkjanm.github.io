@@ -6,6 +6,14 @@ permalink: /talks/
 ---
 
 # Presentations
+### **DEF CON 33**: Advanced Active Directory to Entra ID Lateral Movement Techniques
+**Topic**: Microsoft Entra, Exchange Hybrid, Entra ID connect   
+**Links**: [Abstract](https://defcon.org/html/defcon-33/dc-33-speakers.html#content_60307) | [Slides (PDF)](/assets/raw/_dirkjan%20-%20DC33%20-%20Advanced%20Active%20Directory%20to%20Entra%20ID%20lateral%20movement%20techniques_final.pdf) | [Demo Video: actor token SharePoint](/assets/raw/demo_sharepoint_actor.mp4) | [Demo Video: Graph Abuse](/assets/raw/demo_graph.mp4)
+
+### **Black Hat USA 2025**: Advanced Active Directory to Entra ID Lateral Movement Techniques
+**Topic**: Microsoft Entra, Exchange Hybrid, Entra ID connect   
+**Links**: [Abstract](https://www.blackhat.com/us-25/briefings/schedule/index.html#advanced-active-directory-to-entra-id-lateral-movement-techniques-46500) | [Slides (PDF)](/assets/raw/US-25-Mollema-Advanced-AD-to-Entra-ID-lateral-movement-techniques-final.pdf) | [Demo Video: actor token SharePoint](/assets/raw/demo_sharepoint_actor.mp4) | [Demo Video: Graph Abuse](/assets/raw/demo_graph.mp4)
+
 ### **Troopers 25**: Finding Entra ID CA bypasses - the structured way (joint talk with Fabian Bader)
 **Topic**: Microsoft Entra, Conditional Access, FOCI, BroCI   
 **Links**: [Abstract](https://troopers.de/troopers25/talks/tfsfqs/) | [Slides (PDF)](/assets/raw/Finding%20Entra%20ID%20CA%20Bypasses%20-%20the%20structured%20way.pdf) 
