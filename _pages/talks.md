@@ -8,7 +8,7 @@ permalink: /talks/
 # Presentations
 ### **DEF CON 33**: Advanced Active Directory to Entra ID Lateral Movement Techniques
 **Topic**: Microsoft Entra, Exchange Hybrid, Entra ID connect   
-**Links**: [Abstract](https://defcon.org/html/defcon-33/dc-33-speakers.html#content_60307) | [Slides (PDF)](/assets/raw/_dirkjan%20-%20DC33%20-%20Advanced%20Active%20Directory%20to%20Entra%20ID%20lateral%20movement%20techniques_final.pdf) | [Demo Video: actor token SharePoint](/assets/raw/demo_sharepoint_actor.mp4) | [Demo Video: Graph Abuse](/assets/raw/demo_graph.mp4)
+**Links**: [Abstract](https://defcon.org/html/defcon-33/dc-33-speakers.html#content_60307) | [Slides (PDF)](/assets/raw/dirkjan%20-%20DC33%20-%20Advanced%20Active%20Directory%20to%20Entra%20ID%20lateral%20movement%20techniques_final.pdf) | [Demo Video: actor token SharePoint](/assets/raw/demo_sharepoint_actor.mp4) | [Demo Video: Graph Abuse](/assets/raw/demo_graph.mp4)
 
 ### **Black Hat USA 2025**: Advanced Active Directory to Entra ID Lateral Movement Techniques
 **Topic**: Microsoft Entra, Exchange Hybrid, Entra ID connect   
