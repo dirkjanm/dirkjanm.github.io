@@ -6,6 +6,22 @@ permalink: /talks/
 ---
 
 # Presentations
+### **Area41 2026**: Hacking Every Entra ID Tenant With Actor Tokens
+**Topic**: Microsoft Entra, Actor Tokens   
+**Links**: [Slides (PDF)](/assets/raw/actortokens_area41.pdf) 
+
+### **ExpertsLive Netherlands 2026**: One Token to rule them all - obtaining Global Admin in every Entra ID tenant via Actor tokens 
+**Topic**: Microsoft Entra, Actor Tokens   
+**Links**: [Slides (PDF)](/assets/raw/onetoken_expertslive.pdf) 
+
+### **NorthSec 2026**: Cloud security researcher vs threat actor (joint talk with Sanne Maasakkers)
+**Topic**: Microsoft Entra, Threat Actors, APTs, TTPs, Research    
+**Links**: [Abstract](https://nsec.io/schedule/#session-2026-researchers-vs-threat-actors-in-cloud-attacks) | [Slides (PDF)](/assets/raw/NorthSec_Cloud_threats_presentation.pdf) 
+
+### **WWHF Mile High 2026**: Evolving ROADtools for Entra ID Recon & Tokens
+**Topic**: Microsoft Entra, ROADtools   
+**Links**: [Slides (PDF)](/assets/raw/WWHF%20Evolving%20ROADtools.pdf) 
+
 ### **DEF CON 33**: Advanced Active Directory to Entra ID Lateral Movement Techniques
 **Topic**: Microsoft Entra, Exchange Hybrid, Entra ID connect   
 **Links**: [Abstract](https://defcon.org/html/defcon-33/dc-33-speakers.html#content_60307) | [Slides (PDF)](/assets/raw/dirkjan%20-%20DC33%20-%20Advanced%20Active%20Directory%20to%20Entra%20ID%20lateral%20movement%20techniques_final.pdf) | [Demo Video: actor token SharePoint](/assets/raw/demo_sharepoint_actor.mp4) | [Demo Video: Graph Abuse](/assets/raw/demo_graph.mp4)
