@@ -53,7 +53,7 @@ In the screenshot below we see that the token we get when authenticating to this
 
 ![Scopes in the token](/assets/img/ca/scopes.png)
 
-When we ignore what the scopes say and simply try to call the Microsoft Graph, we do have the ability to read tenant information, in this case listing the groups in the tenant:
+When we ignore what the scopes say and simply try to call the Microsoft Graph, we do have the ability to read tenant information, in this case listing the service principals in the tenant:
 
 ![ServicePrincipals returned as result of MS Graph query](/assets/img/ca/graph_data.png)
 
