@@ -2,7 +2,7 @@
 layout: single
 classes: wide
 title:  "Borrowing Windows Hello keys for authentication and persistence"
-date:   2026-08-04 16:00:57 +0200
+date:   2026-08-05 14:00:57 +0200
 ---
 
 Most research into Windows Hello focuses on the mechanics in use when authenticating to the local device. As an Entra ID researcher, I've always been more interested in how these keys are used to authenticate to the cloud. I've given several [talks](/talks) on Windows Hello for Business (WHFB for short) and about the many implementation flaws discovered in the process, most of which were fixed by Microsoft. For this blog I want to focus on a technique that was left as-is since it is more or less a consequence of how WHFB works: the ability to perform single-sign on with the backing cryptographic keys from a user session, without needing the PIN or other information/user presence. We will not just look at how we can utilize this to request Primary Refresh Tokens (PRTs), but also how we can use this to perform device registration by using the WHFB key as a FIDO key/passkey.
