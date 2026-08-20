@@ -3,6 +3,7 @@ layout: single
 classes: wide
 title:  "Borrowing Windows Hello keys for authentication and persistence"
 date:   2026-08-05 14:00:57 +0200
+last_modified_at: 2026-08-20 13:08:57 +0200
 ---
 
 Most research into Windows Hello focuses on the mechanics in use when authenticating to the local device. As an Entra ID researcher, I've always been more interested in how these keys are used to authenticate to the cloud. I've given several [talks](/talks) on Windows Hello for Business (WHFB for short) and about the many implementation flaws discovered in the process, most of which were fixed by Microsoft. For this blog I want to focus on a technique that was left as-is since it is more or less a consequence of how WHFB works: the ability to perform single-sign on with the backing cryptographic keys from a user session, without needing the PIN or other information/user presence. We will not just look at how we can utilize this to request Primary Refresh Tokens (PRTs), but also how we can use this to perform device registration by using the WHFB key as a FIDO key/passkey.
@@ -84,7 +85,25 @@ SigninLogs
 | where DeviceDetail.deviceId == ""
 ```
 
-If anyone finds this generates many false positives or comes up with a way to improve the query, let me know! Generic monitoring around unexpected new (usually Windows) devices being added by users is also something worth considering, though of course users registering devices is also a perfectly legit operation in most environments.
+Unfortunately this does seem to catch quite a few benign operations as well. A more targeted query is supplied below, thanks to [Fabian Bader](https://x.com/fabian_bader) and [Sapir Federovski](https://x.com/sapirxfed) for providing feedback:
+
+```
+SigninLogs
+| where ResultType == 0
+// Core detection logic
+| where AuthenticationDetails has 'Windows Hello for Business'
+| where isempty(DeviceDetail.deviceId)
+// Filters some noise from B2B scenarios
+| where CrossTenantAccessType == "none"
+// Ignore anything where the AuthenticationDetails rely on previous information or a second step
+| where array_length(todynamic(AuthenticationDetails)) == 1
+// Ignore non-empty AuthContext as it also is an indicator for a non new session
+| where array_length(todynamic(AuthenticationContextClassReferences)) == 0
+```
+
+Narrowing down the query further, for example by filtering on the device registration resource, would further reduce the false positives but also make the detection easier to bypass.
+
+Generic monitoring around unexpected new (usually Windows) devices being added by users is also something worth considering, though of course users registering devices is also a perfectly legit operation in most environments.
 
 ## Tools
 The PowerShell scripts used in this blog are available in the ROADtools repository on GitHub in the [winhello_assertion](https://github.com/dirkjanm/ROADtools/tree/master/winhello_assertion) folder. The latest roadtx versions also support authenticating with WHFB keys as passkeys, either WHFB keys you store on disk, assertions you capture on other hosts, or software based passkeys you obtain. These software based passkeys can also be registered with `roadtx registerpasskey`, which allows you to register passkeys for your own account or on other accounts if you have the correct Entra ID role. This requires a token with the correct delegated rights on the Microsoft Graph, for example `UserAuthenticationMethod.ReadWrite`, which can be found on the [Microsoft Authenticator app](https://entrascopes.com/?appId=4813382a-8fa7-425e-ab75-3b753aab3abb). When provisioning the passkey on your own account, the `ngcmfa` claim is also needed in the token, which can be requested with most roadtx token commands with `--force-ngcmfa`.
