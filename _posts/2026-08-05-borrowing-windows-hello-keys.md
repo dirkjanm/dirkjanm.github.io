@@ -85,7 +85,7 @@ SigninLogs
 | where DeviceDetail.deviceId == ""
 ```
 
-Unfortunately this does seem to catch quite a few benign operations as well. A more targeted query is supplied below, thanks to [Fabian Bader](https://x.com/fabian_bader) and [Sapir Federovski](https://x.com/sapirxfed) for providing feedback:
+Unfortunately this does seem to catch quite a few benign operations as well. A more targeted query is supplied below, thanks to [Fabian Bader](https://x.com/fabian_bader) and [Sapir Federovsky](https://x.com/sapirxfed) for providing feedback:
 
 ```
 SigninLogs
